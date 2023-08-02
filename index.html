@@ -12,116 +12,121 @@
       <div id="settings">
         <img src="cwlogo.jpg" alt="Crosswinds Aviation" id="logo">
         <h1>E6B Worksheet Generator</h1>
-        <form id="checkboxForm" style="float: left;margin-left: 0px;">
-          <h3>Presets</h3>
-          <label>
-            <input type="checkbox" id="selectAll"> Random!
-          </label><br>
-          <label>
-            <input type="checkbox" id="common"> Common XC
-          </label><br>
-          <label>
-            <input type="checkbox" id="written"> PPL Written
-          </label><br>
-          <h3>Wind Calculations</h3>
-          <label>
-              <input type="checkbox" name="option" value="heading"> Heading
-          </label><br>
-          <label>
-              <input type="checkbox" name="option" value="groundspeed"> Groundspeed
-          </label><br>
-          <label>
-              <input type="checkbox" name="option" value="wind_aloft"> Wind Aloft
-          </label><br>
-          <label>
-              <input type="checkbox" name="option" value="runway_headwind_crosswind"> Runway X/H Wind
-          </label><br>
-          <h3>E6B Calculations</h3>
-          <label>
-            <input type="checkbox" name="option" value="speed"> Groundspeed
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="time"> Time enroute
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="dist"> Distance travelled
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="gph"> Fuel-consumption (gph)
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="fuel"> Fuel required (gal)
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="endurance"> Endurance
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="density_alt"> Density altitude
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="true_airspeed"> True airspeed
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="calibrated_airspeed"> Calibrated airspeed
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="true_altitude"> True altitude
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="climb_gradient"> Climb gradiant
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="climb_rate_required"> Climb rate required
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="heading_error"> Heading error
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="heading_correction"> Heading correction
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="distance_to_navaid"> Distance to Navaid
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="time_to_navaid"> Time to Navaid
-          </label><br>
-          <h3>Conversions</h3>
-          <label>
-            <input type="checkbox" name="option" value="convert_volume"> Gallons / Litres
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="convert_distance"> Distance NM / KM / SM
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="convert_weight"> Weight lbs / Kg
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="convert_length"> Length ft / m
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="convert_temperature"> Temperature F / C
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="fuel_weight"> Fuel Weight / Volume
-          </label><br>
-          <h3>Math</h3>
-          <label>
-            <input type="checkbox" name="option" value="multiplication"> Multiplication
-          </label><br>
-          <label>
-            <input type="checkbox" name="option" value="division"> Division
-          </label><br>
-          <h3></h3>
-          <input type="button" value="Generate Worksheet" onclick="getSelectedOptions()">
-        </form>
-        <div style="width: 30%; float:right">
-          <h3>Directions</h3>
-          <li>Select desired calculations for student to solve. Or use the one of the three set options from the top!</li><br>
-          <li> Press "Generate Worksheet".</li><br>
-          <li> Press Ctlr-P(Windows).<br>CMB-P(Apple).<br>Share - Print(Mobile).</li><br>
-          <input type="range" id="tprob" min="5" max="20" value="10">
-          <p id="value">Total Problems: 10<p><br>
-          <i>Note: After generating worksheet, questions and the answer key will be seperated so the instructor can verify the student's answer.</i>
+        <div style="display: flex;">
+          <form id="checkboxForm" style="flex: 1;margin-right: 30%">
+            <h3>Presets</h3>
+            <label>
+              <input type="checkbox" id="selectAll"> Random!
+            </label><br>
+            <label>
+              <input type="checkbox" id="common"> Common XC
+            </label><br>
+            <label>
+              <input type="checkbox" id="written"> PPL Written
+            </label><br>
+            <h3>Wind Calculations</h3>
+            <label>
+                <input type="checkbox" name="option" value="heading"> Heading
+            </label><br>
+            <label>
+                <input type="checkbox" name="option" value="groundspeed"> Groundspeed
+            </label><br>
+            <label>
+                <input type="checkbox" name="option" value="wind_aloft"> Wind Aloft
+            </label><br>
+            <label>
+                <input type="checkbox" name="option" value="runway_headwind_crosswind"> Runway X/H Wind
+            </label><br>
+            <h3>E6B Calculations</h3>
+            <label>
+              <input type="checkbox" name="option" value="speed"> Groundspeed
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="time"> Time enroute
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="dist"> Distance travelled
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="gph"> Fuel-consumption (gph)
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="fuel"> Fuel required (gal)
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="endurance"> Endurance
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="density_alt"> Density altitude
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="true_airspeed"> True airspeed
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="calibrated_airspeed"> Calibrated airspeed
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="true_altitude"> True altitude
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="climb_gradient"> Climb gradiant
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="climb_rate_required"> Climb rate required
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="heading_error"> Heading error
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="heading_correction"> Heading correction
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="distance_to_navaid"> Distance to Navaid
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="time_to_navaid"> Time to Navaid
+            </label><br>
+            <h3>Conversions</h3>
+            <label>
+              <input type="checkbox" name="option" value="convert_volume"> Gallons / Litres
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="convert_distance"> Distance NM / KM / SM
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="convert_weight"> Weight lbs / Kg
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="convert_length"> Length ft / m
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="convert_temperature"> Temperature F / C
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="fuel_weight"> Fuel Weight / Volume
+            </label><br>
+            <h3>Math</h3>
+            <label>
+              <input type="checkbox" name="option" value="multiplication"> Multiplication
+            </label><br>
+            <label>
+              <input type="checkbox" name="option" value="division"> Division
+            </label><br>
+            <h3></h3>
+            <input type="button" value="Generate Worksheet" onclick="getSelectedOptions()">
+          </form>
+          <div style="flex: 1;">
+            <h3>Directions</h3>
+            <li>Select desired calculations for student to solve. Or use the one of the three set options from the top!</li><br>
+            <li> Press "Generate Worksheet".</li><br>
+            <li> Press Ctlr-P(Windows).<br>CMB-P(Apple).<br>Share - Print(Mobile).</li><br>
+            <input type="range" id="tprob" min="5" max="20" value="10">
+            <p id="value">Total Problems: 10<p><br>
+            <i>Note: After generating worksheet, questions and the answer key will be seperated so the instructor can verify the student's answer.</i>
+          </div>
+        </div>
+        <div>
+          <p style="margin-top:4em;text-align:center;">Designed by <a href="mailto:dbowen@crosswindsaviation.com">Drew Bowen</a>. <i>Last update 8/1/2023</i></p>
         </div>
       </div>
 
