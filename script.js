@@ -533,8 +533,9 @@ e6b.gen_density_alt = function () {
     p.palt = e6b.rand(1, 18) * 1000;
     p.oat = Math.round(15 - (p.palt * 1.98 / 1000) + oat_offset);
     p.dalt = e6b.compute.density_altitude(p.palt, p.oat);
-    p.cas = e6b.rand(70, 250);
-    p.tas = Math.round(e6b.compute.true_airspeed(p.cas, p.dalt));
+    temp = e6b.rand(70, 250);
+    p.tas = Math.round(e6b.compute.true_airspeed(temp, p.dalt));
+    p.cas = Math.round(e6b.compute.calibrated_airspeed(p.tas, p.dalt));
     p.oat = Math.round(p.oat);
     return p;
 };
@@ -550,7 +551,7 @@ e6b.problems.density_alt = function () {
                 p.palt, p.oat),
         e6b.fmt("Approximately {{n}} ft density altitude", Math.round(p.dalt / 1000) * 1000),
         [
-            e6b.fmt("In the bottom section of the True Airspeed window, line up {{n}} (thousand feet) pressure altitude with {{n}}°C",
+            e6b.fmt("In the bottom section of the True Airspeed window(right side), line up {{n}} (thousand feet) pressure altitude with {{n}}°C",
                     Math.round(p.palt / 1000), p.oat),
             e6b.fmt("In the top section, read {{n}} (thousand feet) under the Density Altitude pointer",
                     Math.round(p.dalt / 1000) * 1000)
@@ -569,10 +570,28 @@ e6b.problems.true_airspeed = function () {
                 p.palt, p.oat, p.cas),
         e6b.fmt("{{n}} kt true airspeed", p.tas),
         [
-            e6b.fmt("In the True Airspeed window, line up {{n}} (thousand feet) pressure altitude with {{n}}°C",
+            e6b.fmt("In the True Airspeed window(right side), line up {{n}} (thousand feet) pressure altitude with {{n}}°C",
                     Math.round(p.palt / 1000), p.oat),
             e6b.fmt("Find the calibrated airspeed {{n}} kt on the inner scale of the main circle", p.cas),
             e6b.fmt("Read the true airspeed {{n}} kt on the outer scale above {{n}}", p.tas, p.cas)
+        ]
+    ];
+};
+
+/**
+ * Calculator problem: CAS from TAS, pressure altitude, and OAT
+ */
+e6b.problems.calibrated_airspeed = function () {
+    var p = e6b.gen_density_alt();
+    return [
+        e6b.fmt("Calibrated airspeed (knots): {{n}} ft pressure altitude, {{n}}°C outside air temperature, {{n}} kt true airspeed",
+                p.palt, p.oat, p.tas),
+        e6b.fmt("{{n}} kt calibrated airspeed", p.cas),
+        [
+            e6b.fmt("In the True Airspeed window(right side), line up {{n}} (thousand feet) pressure altitude with {{n}}°C",
+                    Math.round(p.palt / 1000), p.oat),
+            e6b.fmt("Find the true airspeed {{n}} kt on the outer scale", p.tas),
+            e6b.fmt("Read the calibrated airspeed {{n}} kt on the inner scale under {{n}}", p.cas, p.tas)
         ]
     ];
 };
@@ -1078,6 +1097,15 @@ e6b.compute.density_altitude = function (pressure_altitude, temperature) {
 e6b.compute.true_airspeed = function (calibrated_airspeed, density_altitude) {
     var factor = 1 + ((density_altitude / 1000) * (0.012 + (density_altitude / 1000) * 0.0004)); // WRONG, but close
     return Math.round(calibrated_airspeed * factor);
+};
+
+/**
+ * Calculate calibrated airspeed from calibrated airspeed and density altitude.
+ * Reverse engineered from the E6B
+ */
+e6b.compute.calibrated_airspeed = function (true_airspeed, density_altitude) {
+    var factor = 1 + ((density_altitude / 1000) * (0.012 + (density_altitude / 1000) * 0.0004)); // WRONG, but close
+    return Math.round(true_airspeed / factor);
 };
 
 ////////////////////////////////////////////////////////////////////////
