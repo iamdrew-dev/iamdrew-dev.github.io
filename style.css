@@ -5,6 +5,7 @@ body {
     max-width: 640px;
     color: #404040;
     break-inside: avoid;
+    padding-bottom: 50px;
 }
 
 #logo {
