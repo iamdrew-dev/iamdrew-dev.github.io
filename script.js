@@ -91,10 +91,14 @@ document.getElementById('settings').innerHTML = "";
 
 var topSection = document.createElement("section");
 
+var logoContainer = document.createElement("div");
+logoContainer.className = 'logo-container';
+
 var logo = document.createElement("img");
-logo.src = "cwlogo.jpg";
+logo.src = "images/cwlogo.jpg";
 logo.alt = "Crosswinds Aviation";
-logo.id = "logo2";
+logo.style.maxWidth = "25%"
+logo.className = 'logo';
 
 var name = document.createElement("p");
 name.style.float = "left";
@@ -104,7 +108,8 @@ var date = document.createElement("p");
 date.style.float = "right";
 date.textContent = "Date:_________________________";
 
-topSection.appendChild(logo);
+logoContainer.appendChild(logo);
+topSection.appendChild(logoContainer);
 topSection.appendChild(name);
 topSection.appendChild(date);
 document.body.appendChild(topSection);
