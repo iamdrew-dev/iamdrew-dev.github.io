@@ -46,7 +46,6 @@ h3 {
 }
 
 #number {
-    font-size: 120%;
     font-weight: bold;
     margin-left: -1.5em;
     margin-bottom: -2.2em;
@@ -55,10 +54,8 @@ h3 {
 }
 
 #help {
-    background: #eeeeaa;
+    font-style: italic;
     padding: 1ex 1em;
-    border: 1px solid #3d3d3d;
-    border-radius: 0.25em;
     margin: 1ex 0;
 }
 

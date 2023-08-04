@@ -92,13 +92,13 @@ document.getElementById('settings').innerHTML = "";
 var topSection = document.createElement("section");
 
 var logoContainer = document.createElement("div");
-logoContainer.className = 'logo-container';
+logoContainer.id = 'logo-container';
 
 var logo = document.createElement("img");
 logo.src = "images/cwlogo.jpg";
 logo.alt = "Crosswinds Aviation";
 logo.style.maxWidth = "25%"
-logo.className = 'logo';
+logo.id = 'logo';
 
 var name = document.createElement("p");
 name.style.float = "left";
@@ -161,6 +161,11 @@ for (let i in question) {
 // make answer key section so that a page break can be added to seperate from questions
 var answerkey = document.createElement("section");
 answerkey.id = "answerkey";
+
+var answerkeyTitle = document.createElement("h3");
+answerkeyTitle.textContent = "Answer Key";
+
+answerkey.appendChild(answerkeyTitle);
 
 for  (let i in answer) {
     // Create the Answer paragraph element
