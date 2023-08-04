@@ -8,7 +8,7 @@ input.addEventListener("input", (event) => {
 value.textContent = "Total Problems: " + event.target.value;
 });
 
-// JavaScript to handle "Select All" functionality
+// JavaScript to handle "Select All/Common/Written" functionality
 const selectAllCheckbox = document.getElementById('selectAll');
 const selectCommonCheckbox = document.getElementById('common');
 const selectWrittenCheckbox = document.getElementById('written');
