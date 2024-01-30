@@ -1191,3 +1191,7 @@ function toggleAccordion(element) {
         overlay.style.display = "block";
     }
 }
+
+document.getElementById("colorToggle").addEventListener("change", function() {
+    document.documentElement.style.setProperty('--default-color', this.checked ? '#00773c' : '#21409a');
+});

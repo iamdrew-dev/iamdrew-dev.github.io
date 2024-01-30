@@ -1,3 +1,7 @@
+:root {
+    --default-color: #21409a; /* Default background color */
+}
+
 body {
     font-family: 'Helvetica', 'Arial', sans-serif;
     margin: auto;
@@ -93,12 +97,12 @@ h3 {
     font-weight: 700;
     text-align: center;
     color: #fff;
-    background-color: #00773c;
+    background-color: var( --default-color);
     height: 48px;
 }
 
 .button:hover{
-    background-color: #367b59;
+    opacity: 0.9;
 }
 
 .slider {
@@ -108,7 +112,6 @@ h3 {
     border-radius: 5px;  
     background: #ccc;
     outline: none;
-    opacity: 0.7;
     -webkit-transition: .2s;
     transition: opacity .2s;
 }
@@ -119,19 +122,20 @@ h3 {
     width: 25px;
     height: 25px;
     border-radius: 50%; 
-    background: #00773c;
+    background: var( --default-color);
     cursor: pointer;
+    filter: drop-shadow(0 0.1rem 0.4rem rgba(0, 0, 0, 0.5));
 }
 
 .slider::-moz-range-thumb {
     width: 25px;
     height: 25px;
     border-radius: 50%;
-    background: #00773c;
+    background: var( --default-color);
     cursor: pointer;
+    filter: drop-shadow(0.35rem 0.35rem 0.4rem rgba(0, 0, 0, 0.5));
 }
 
-/* The container */
 .container {
     display: flex;
     justify-content: right;
@@ -148,7 +152,6 @@ h3 {
     margin: -10px 10px;
 }
 
-/* Hide the browser's default checkbox */
 .container input {
     position: absolute;
     opacity: 0;
@@ -157,42 +160,37 @@ h3 {
     width: 0;
 }
 
-/* Create a custom checkbox */
 .checkmark {
     position: absolute;
-    top: 9px;
+    top: 8px;
     left: 9px;
     background-color: #1f1f1f;
     border: 1px solid #000;
     border-radius: 50%;
     cursor: pointer;
-    height: 20px;
-    width: 20px;
+    height: 22px;
+    width: 22px;
     display: block;
 }
 
-/* When the checkbox is checked, add a green background */
 .container input:checked ~ .checkmark {
-    background-color: #00773c;
-    border-color: #367b59;
+    background-color: var( --default-color);
+    border: 0;
 }
 
-/* Create the checkmark/indicator (hidden when not checked) */
 .checkmark:after {
     content: "";
     position: absolute;
     display: none;
 }
 
-/* Show the checkmark when checked */
 .container input:checked ~ .checkmark:after {
     display: block;
 }
 
-/* Style the checkmark/indicator */
 .container .checkmark:after {
-    left: 6px;
-    top: 3px;
+    left: 7px;
+    top: 4px;
     width: 5px;
     height: 9px;
     border: 2px solid white;
@@ -211,14 +209,14 @@ h3 {
 }
 
 #toptable {
-    background-color: #00773c;
+    background-color: var( --default-color);
     border-radius: 20px;
     border: 0px;
 }
 
 .checkbox-table td {
-    width: auto; /* Adjust the width as needed */
-    text-align: center; /* Optional: Center-align content within cells */
+    width: auto;
+    text-align: center;
     padding: 2em 0;
 }
 
@@ -268,22 +266,90 @@ h3 {
     height: 48px;
 }
 
+.accordion-header:hover{
+    opacity: 0.8;
+}
+
 .accordion-content {
     display: none;
+    margin-top: 10px;
     padding: 10px;
     position: absolute;
     top: 100%;
-    left: 0;
+    left: -50%;
     width: 200%;
     background-color: #fff;
     z-index: 3;
+    border-radius: 20px;
 }
 
 .accordion-content ul {
     list-style-position: inside;
-    text-indent: -1.3em; /* Adjust the value to control the indentation */
+    text-indent: -1.3em;
+    line-height: 20px;
 }
 
 .accordion-content p {
     margin: 0;
+}
+
+.toggle-container {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.sliderx {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.sliderx:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .sliderx {
+    background-color: #0f1010;
+}
+
+input:checked + .sliderx:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+#toggleLabel {
+    margin-left: 10px;
 }
