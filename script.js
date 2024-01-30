@@ -1178,3 +1178,16 @@ e6b.fmt = function (fmt) {
 /*
 - update solutions with non-e6b ways of solving
 */
+
+function toggleAccordion(element) {
+    var content = element.nextElementSibling;
+    var overlay = document.getElementById('overlay');
+
+    if (content.style.display === "block") {
+        content.style.display = "none";
+        overlay.style.display = "none";
+    } else {
+        content.style.display = "block";
+        overlay.style.display = "block";
+    }
+}
