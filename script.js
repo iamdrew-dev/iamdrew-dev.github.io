@@ -1174,7 +1174,6 @@ e6b.fmt = function (fmt) {
     return result;
 };
 
-// end
 /*
 - update solutions with non-e6b ways of solving
 */
