@@ -74,7 +74,7 @@ selectWrittenCheckbox.checked = false;
 // Build the Worksheet
 ////////////////////////////////////////////////////////////////////////
 
-function printWorksheet() {
+/* function printWorksheet() {
     var printButton = document.getElementById('printbutton');
     printButton.parentNode.removeChild(printButton);
 
@@ -85,7 +85,43 @@ function printWorksheet() {
 
     document.getElementById('settings').appendChild(printButton);
     document.getElementById('settings').appendChild(note);
+} */
+
+function printPage() {
+    window.print();
 }
+
+window.addEventListener('beforeprint', function() {
+    var printButton = document.getElementById('printbutton');
+    if (printButton) {
+        printButton.parentNode.removeChild(printButton);
+    }
+    var note = document.getElementById('note');
+    if (note) {
+        note.parentNode.removeChild(note);
+    }
+});
+
+window.addEventListener('afterprint', function() {
+    var print = document.createElement("button");
+    print.classList.add("button");
+    print.id = 'printbutton'
+    print.textContent = "Print";
+    print.onclick = printPage;
+    print.style.display = 'block';
+    print.style.margin = '3em auto';
+
+    var note = document.createElement("p");
+    note.id = 'note'
+    note.style.textAlign = "center";
+    note.style.color = "#ff0000";
+    note.style.fontSize = "2em";
+    note.style.fontWeight = "700";
+    note.textContent = "When printing Questions and Answer key will automatically be seperated accross pages. To print multiple Question sheets use the \"Pages\" drop-down within the print dialog to select desired pages to be print.";
+
+    document.getElementById('settings').appendChild(print);
+    document.getElementById('settings').appendChild(note);
+});
 
 // Get all slected checkboxes when Generate Worksheet is pressed
 function getSelectedOptions() {
@@ -106,7 +142,7 @@ function getSelectedOptions() {
     print.classList.add("button");
     print.id = 'printbutton'
     print.textContent = "Print";
-    print.onclick = printWorksheet;
+    print.onclick = printPage;
     print.style.display = 'block';
     print.style.margin = '3em auto';
 
