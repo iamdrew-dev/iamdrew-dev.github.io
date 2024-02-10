@@ -64,15 +64,15 @@ h3 {
 
 @media (max-width: 480px) {
     #question {
-        font-size: 0.5rem;
+        font-size: 0.6rem;
         margin-left: 1.5rem;
     }
     #answerkey {
-        font-size: 0.35rem;
+        font-size: 0.33rem;
         margin-left: 1.5rem;
     }
     p {
-        font-size: 0.4rem;
+        font-size: 0.42rem;
     }
   }
   
