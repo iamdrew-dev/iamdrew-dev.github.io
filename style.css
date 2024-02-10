@@ -44,8 +44,13 @@ h3 {
     font-family: 'Roboto Condensed', 'Helvetica', 'Arial', sans-serif;
 }
 
-#question, #answer {
-    font-size: 120%;
+#question {
+    font-size: 2em;
+    margin-left: 1.5em;
+}
+
+#answerkey {
+    font-size: 1em;
     margin-left: 1.5em;
 }
 
@@ -210,7 +215,7 @@ h3 {
 
 #toptable {
     background-color: var( --default-color);
-    border-radius: 20px;
+    border-radius: 0px;
     border: 0px;
 }
 
