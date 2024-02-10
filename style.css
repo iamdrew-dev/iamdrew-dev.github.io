@@ -45,26 +45,26 @@ h3 {
 }
 
 #question {
-    font-size: 2em;
-    margin-left: 1.5em;
+    font-size: 2rem;
+    margin-left: 1.5rem;
 }
 
 #answerkey {
-    font-size: 1em;
-    margin-left: 1.5em;
+    font-size: 1rem;
+    margin-left: 1.5rem;
 }
 
 #number {
     font-weight: bold;
-    margin-left: -1.5em;
-    margin-bottom: -2.2em;
-    margin-top: 3em;
-    width: 1.5em;
+    margin-left: -1.5rem;
+    margin-bottom: -2.2rem;
+    margin-top: 3rem;
+    width: 1.5rem;
 }
 
 #help {
     font-style: italic;
-    padding: 1ex 1em;
+    padding: 1ex 1rem;
     margin: 1ex 0;
 }
 
@@ -75,7 +75,7 @@ h3 {
 
 #help li {
     margin-bottom: 1ex;
-    margin-left: 1em;
+    margin-left: 1rem;
 }
 
 .button-container {
