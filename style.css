@@ -44,7 +44,7 @@ h3 {
     font-family: 'Roboto Condensed', 'Helvetica', 'Arial', sans-serif;
 }
 
-#question {
+/* #question {
     font-size: 2rem;
     margin-left: 1.5rem;
 }
@@ -52,7 +52,7 @@ h3 {
 #answerkey {
     font-size: 1rem;
     margin-left: 1.5rem;
-}
+} */
 
 #number {
     font-weight: bold;
@@ -61,6 +61,28 @@ h3 {
     margin-top: 3rem;
     width: 1.5rem;
 }
+
+@media (max-width: 480px) {
+    #question {
+        font-size: 1rem;
+        margin-left: 1.5rem;
+    }
+    #answerkey {
+        font-size: 0.5rem;
+        margin-left: 1.5rem;
+    }
+  }
+  
+  @media (min-width: 481px) {
+    #question {
+        font-size: 2rem;
+        margin-left: 1.5rem;
+    }
+    #answerkey {
+        font-size: 1rem;
+        margin-left: 1.5rem;
+    }
+  }
 
 #help {
     font-style: italic;
