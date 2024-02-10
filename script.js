@@ -131,6 +131,7 @@ function getSelectedOptions() {
     logo.src = "images/cwlogo.jpg";
     logo.alt = "Crosswinds Aviation";
     logo.style.maxWidth = "25%"
+    logo.style.marginBottom = "2em"
     logo.id = 'logo';
 
     var name = document.createElement("p");
