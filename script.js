@@ -74,140 +74,175 @@ selectWrittenCheckbox.checked = false;
 // Build the Worksheet
 ////////////////////////////////////////////////////////////////////////
 
+function printWorksheet() {
+    var printButton = document.getElementById('printbutton');
+    printButton.parentNode.removeChild(printButton);
+
+    var note = document.getElementById('note');
+    note.parentNode.removeChild(note);
+
+    window.print();
+
+    document.getElementById('settings').appendChild(printButton);
+    document.getElementById('settings').appendChild(note);
+}
+
 // Get all slected checkboxes when Generate Worksheet is pressed
 function getSelectedOptions() {
-const selectedOptions = [input.value];
+    const selectedOptions = [input.value];
 
-for (const checkbox of optionCheckboxes) {
-    if (checkbox.checked) {
-        selectedOptions.push(checkbox.value);
-    }
-}
-
-// Remove everything from webpage before populating 
-document.getElementById('settings').innerHTML = "";
-
-// Add Name, Date and Crosswinds Logo
-
-var topSection = document.createElement("section");
-
-var logoContainer = document.createElement("div");
-logoContainer.id = 'logo-container';
-
-var logo = document.createElement("img");
-logo.src = "images/cwlogo.jpg";
-logo.alt = "Crosswinds Aviation";
-logo.style.maxWidth = "25%"
-logo.id = 'logo';
-
-var name = document.createElement("p");
-name.style.float = "left";
-name.textContent = "Name:_________________________";
-
-var date = document.createElement("p");
-date.style.float = "right";
-date.textContent = "Date:_________________________";
-
-logoContainer.appendChild(logo);
-topSection.appendChild(logoContainer);
-topSection.appendChild(name);
-topSection.appendChild(date);
-document.body.appendChild(topSection);
-
-
-// populate questions and answers
-
-const question = [];
-const answer = [];
-const solution = [];
-var problems = e6b.problems;
-
-while (question.length < selectedOptions[0]) {
-    var options = selectedOptions.slice(1); // Exclude the first element, which is the number of options needed
-
-    // Shuffle the options array to introduce randomness
-    options.sort(() => Math.random() - 0.5);
-
-    for (let i = 0; i < options.length; i++) {
-    if (question.length >= selectedOptions[0]) {
-        // If we have enough elements in the question array, exit the loop
-        break;
+    for (const checkbox of optionCheckboxes) {
+        if (checkbox.checked) {
+            selectedOptions.push(checkbox.value);
+        }
     }
 
-    var problem = problems[options[i]]()
+    // Remove everything from webpage before populating 
+    document.getElementById('settings').innerHTML = "";
 
-    question.push(problem[0]);
-    answer.push(problem[1]);
-    solution.push(problem[2]);
+    // Add Print button
+
+    var print = document.createElement("button");
+    print.classList.add("button");
+    print.id = 'printbutton'
+    print.textContent = "Print";
+    print.onclick = printWorksheet;
+    print.style.display = 'block';
+    print.style.margin = '3em auto';
+
+    // Add notes
+
+    var note = document.createElement("p");
+    note.id = 'note'
+    note.style.textAlign = "center";
+    note.style.color = "#ff0000";
+    note.style.fontSize = "2em";
+    note.style.fontWeight = "700";
+    note.textContent = "When printing Questions and Answer key will automatically be seperated accross pages. To print multiple Question sheets use the \"Pages\" drop-down within the print dialog to select desired pages to be print.";
+
+    // Add Name, Date and Crosswinds Logo
+
+    var topSection = document.createElement("section");
+
+    var logoContainer = document.createElement("div");
+    logoContainer.id = 'logo-container';
+
+    var logo = document.createElement("img");
+    logo.src = "images/cwlogo.jpg";
+    logo.alt = "Crosswinds Aviation";
+    logo.style.maxWidth = "25%"
+    logo.id = 'logo';
+
+    var name = document.createElement("p");
+    name.style.float = "left";
+    name.textContent = "Name:_________________________";
+
+    var date = document.createElement("p");
+    date.style.float = "right";
+    date.textContent = "Date:_________________________";
+
+    logoContainer.appendChild(logo);
+    topSection.appendChild(print);
+    topSection.appendChild(note);
+    topSection.appendChild(logoContainer);
+    topSection.appendChild(name);
+    topSection.appendChild(date);
+    document.body.appendChild(topSection);
+
+
+    // populate questions and answers
+
+    const question = [];
+    const answer = [];
+    const solution = [];
+    var problems = e6b.problems;
+
+    while (question.length < selectedOptions[0]) {
+        var options = selectedOptions.slice(1); // Exclude the first element, which is the number of options needed
+
+        // Shuffle the options array to introduce randomness
+        options.sort(() => Math.random() - 0.5);
+
+        for (let i = 0; i < options.length; i++) {
+        if (question.length >= selectedOptions[0]) {
+            // If we have enough elements in the question array, exit the loop
+            break;
+        }
+
+        var problem = problems[options[i]]()
+
+        question.push(problem[0]);
+        answer.push(problem[1]);
+        solution.push(problem[2]);
+        }
     }
-}
 
-for (let i in question) {
+    for (let i in question) {
 
-    // Create the Question paragraph element
-    var qn = document.createElement("p");
-    qn.id = "number";
-    var number = Number(i)+1;
-    qn.textContent = number + ".";
+        // Create the Question paragraph element
+        var qn = document.createElement("p");
+        qn.id = "number";
+        var number = Number(i)+1;
+        qn.textContent = number + ".";
 
-    var q = document.createElement("p");
-    q.id = "question";
-    q.textContent = question[i];
+        var q = document.createElement("p");
+        q.id = "question";
+        q.textContent = question[i];
 
-    document.body.appendChild(qn);
-    document.body.appendChild(q);
-}
-
-// make answer key section so that a page break can be added to seperate from questions
-var answerkey = document.createElement("section");
-answerkey.id = "answerkey";
-
-var answerkeyTitle = document.createElement("h3");
-answerkeyTitle.textContent = "Answer Key";
-
-answerkey.appendChild(answerkeyTitle);
-
-for  (let i in answer) {
-    // Create the Answer paragraph element
-    var an = document.createElement("p");
-    an.id = "number";
-    var number = Number(i)+1;
-    an.textContent = number + ".";
-
-    var a = document.createElement("p");
-    a.id = "answer";
-    a.textContent =  answer[i];
-
-    // Create the ordered list element
-    var s = document.createElement("ol");
-    s.id = "help-steps";
-
-    // Populate the ordered list with list items
-    for (let z of solution[i]) {
-        var li = document.createElement("li");
-        li.textContent = z;
-        s.appendChild(li);
+        document.body.appendChild(qn);
+        document.body.appendChild(q);
     }
 
-    // Create the section element and append the header and ordered list
-    var section = document.createElement("section");
-    section.id = "help";
-    section.appendChild(s);
+    // make answer key section so that a page break can be added to seperate from questions
+    var answerkey = document.createElement("section");
+    answerkey.id = "answerkey";
 
-    // Contain all of solution so it does get cut-off
+    var answerkeyTitle = document.createElement("h3");
+    answerkeyTitle.textContent = "Answer Key";
 
-    var finalSolution = document.createElement("section");
-    finalSolution.id = "finalSolution";
-    finalSolution.appendChild(an);
-    finalSolution.appendChild(a);
-    finalSolution.appendChild(section);
+    answerkey.appendChild(answerkeyTitle);
 
-    // Append the paragraphs and the section to the body
-    
-    
-    answerkey.appendChild(finalSolution);
-}
-document.body.appendChild(answerkey);
+    for  (let i in answer) {
+        // Create the Answer paragraph element
+        var an = document.createElement("p");
+        an.id = "number";
+        var number = Number(i)+1;
+        an.textContent = number + ".";
+
+        var a = document.createElement("p");
+        a.id = "answer";
+        a.textContent =  answer[i];
+
+        // Create the ordered list element
+        var s = document.createElement("ol");
+        s.id = "help-steps";
+
+        // Populate the ordered list with list items
+        for (let z of solution[i]) {
+            var li = document.createElement("li");
+            li.textContent = z;
+            s.appendChild(li);
+        }
+
+        // Create the section element and append the header and ordered list
+        var section = document.createElement("section");
+        section.id = "help";
+        section.appendChild(s);
+
+        // Contain all of solution so it does get cut-off
+
+        var finalSolution = document.createElement("section");
+        finalSolution.id = "finalSolution";
+        finalSolution.appendChild(an);
+        finalSolution.appendChild(a);
+        finalSolution.appendChild(section);
+
+        // Append the paragraphs and the section to the body
+        
+        
+        answerkey.appendChild(finalSolution);
+    }
+    document.body.appendChild(answerkey);
 }
 
 

@@ -245,59 +245,6 @@ h3 {
     z-index: 1;
 }
 
-.accordion {
-    display: flex;
-    flex-direction: column;
-    max-width: 300px;
-    margin: 20px auto;
-    position: relative;
-    z-index: 2;
-}
-
-.accordion-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    outline: none;
-    cursor: pointer;
-    font-size: 14px;
-    letter-spacing: 1px;
-    border-radius: 500px;
-    min-width: 160px;
-    text-transform: uppercase;
-    font-weight: 700;
-    background-color: #eee;
-    border: 1px solid #1f1f1f;
-    height: 48px;
-}
-
-.accordion-header:hover{
-    opacity: 0.8;
-}
-
-.accordion-content {
-    display: none;
-    margin-top: 10px;
-    padding: 10px;
-    position: absolute;
-    top: 100%;
-    left: -50%;
-    width: 200%;
-    background-color: #fff;
-    z-index: 3;
-    border-radius: 20px;
-}
-
-.accordion-content ul {
-    list-style-position: inside;
-    text-indent: -1.3em;
-    line-height: 20px;
-}
-
-.accordion-content p {
-    margin: 0;
-}
-
 .toggle-container {
     position: fixed;
     top: 10px;
