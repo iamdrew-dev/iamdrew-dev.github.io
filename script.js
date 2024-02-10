@@ -74,19 +74,6 @@ selectWrittenCheckbox.checked = false;
 // Build the Worksheet
 ////////////////////////////////////////////////////////////////////////
 
-/* function printWorksheet() {
-    var printButton = document.getElementById('printbutton');
-    printButton.parentNode.removeChild(printButton);
-
-    var note = document.getElementById('note');
-    note.parentNode.removeChild(note);
-
-    window.print();
-
-    document.getElementById('settings').appendChild(printButton);
-    document.getElementById('settings').appendChild(note);
-} */
-
 function printPage() {
     window.print();
 }
