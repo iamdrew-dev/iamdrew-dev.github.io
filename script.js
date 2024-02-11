@@ -269,7 +269,7 @@ function getSelectedOptions() {
     bottom.textContent = navigator.userAgent;
     bottom.style.position = "fixed";
     bottom.style.bottom = "10px";
-    bottom.style.textAlign = "center";
+    bottom.style.left = "10px";
     bottom.style.color = "rgba(0, 0, 0, 0.5)";
     bottom.style.fontSize = "8px";
     document.body.appendChild(bottom);
