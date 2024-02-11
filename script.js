@@ -232,7 +232,6 @@ function getSelectedOptions() {
 
     var note = document.createElement("p");
     note.style.color = "#ff0000";
-    note.style.fontSize = "2em";
     note.style.fontWeight = "700";
     note.style.textAlign = "center";
     note.textContent = "When printing Questions and Answer key will automatically be separated across pages. To print multiple Question sheets use the \"Pages\" drop-down within the print dialog to select desired pages to be printed.";
