@@ -94,11 +94,13 @@ function getSelectedOptions() {
 
     var img = new Image();
     img.src = 'images/cwlogo.jpg';
-    var imgWidth = img.width/100;
-    var pdfWidth = doc.internal.pageSize.getWidth();
-    var x = (pdfWidth - imgWidth) / 2;
 
-    doc.addImage(img, 'JPEG', x, 10, imgWidth, img.height/100);
+    img.onload = function() {
+        var imgWidth = img.width / 100;
+        var pdfWidth = doc.internal.pageSize.getWidth();
+        var x = (pdfWidth - imgWidth) / 2;
+        doc.addImage(img, 'JPEG', x, 10, imgWidth, img.height / 100);
+    };
 
     doc.setFontSize(12);
     doc.setTextColor(0);
