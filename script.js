@@ -239,14 +239,17 @@ function getSelectedOptions() {
     if (window.innerWidth <= 1025) {
         var pdfBlob = doc.output('blob');
 
-        // Create a Blob URL for the PDF
-        var blobUrl = URL.createObjectURL(pdfBlob);
+        // Convert the Blob into a data URL
+        var reader = new FileReader();
+        reader.onloadend = function() {
+        // Get the data URL representing the PDF Blob
+        var dataUrl = reader.result;
 
-        // Redirect to the Google Drive PDF viewer with the Blob URL
-        var googleDriveViewerUrl = 'https://drive.google.com/viewerng/viewer?url=' + encodeURIComponent(blobUrl);
-        window.location.href = googleDriveViewerUrl;
-
-        console.log(pdfBlob, blobUrl, googleDriveViewerUrl);
+        // Redirect to the Google Drive PDF viewer with the data URL
+        var googleDriveViewerUrl = 'https://drive.google.com/viewerng/viewer?url=' + encodeURIComponent(dataUrl);
+        window.open(googleDriveViewerUrl, '_blank');
+        };
+        reader.readAsDataURL(pdfBlob);
 
         /* var iframe = document.createElement('iframe');
         var url = doc.output('bloburl').slice(5);
