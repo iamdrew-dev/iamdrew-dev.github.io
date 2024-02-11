@@ -34,11 +34,11 @@ p{
 label {
     font-size: 16px;
 }
-#pdfViewer {
-    width: 100vw;
-    height: 100%;
+.pdfViewer {
+    display:inline-block;
+    width:50%;
+    height:100%;
 }
-
 .button-container{
     display:flex;
     justify-content:center;

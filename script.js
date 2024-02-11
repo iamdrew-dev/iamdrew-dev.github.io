@@ -90,24 +90,18 @@ function getSelectedOptions() {
         }
     }
     const doc = new jsPDF();
+    doc.setProperties({
+        title: 'Questions',
+        subject: 'E6b Worksheet Generator Questions',
+        creator: 'Drew Bowen'
+    });
     doc.addFont(robotoRegular, "RobotoRegular", "normal");
 
-    var img = new Image();
-    img.src = 'images/cwlogo.jpg';
-    img.onload = function() {
-        var canvas = document.createElement('canvas');
-        var ctx = canvas.getContext('2d');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-        var dataURL = canvas.toDataURL('image/jpeg');
-        var imgWidth = img.width / 100;
-        var pdfWidth = doc.internal.pageSize.getWidth();
-        var x = (pdfWidth - imgWidth) / 2;
-        doc.addImage(dataURL, 'JPEG', x, 10, imgWidth, img.height / 100);
-        canvas = null;
-    };
 
+    var imgWidth = 60;
+    var pdfWidth = doc.internal.pageSize.getWidth();
+    var x = (pdfWidth - imgWidth) / 2;
+    doc.addImage('images/cwlogo.jpg', 'JPEG', x, 10, imgWidth, 0);
 
     doc.setFontSize(12);
     doc.setTextColor(0);
@@ -167,15 +161,22 @@ function getSelectedOptions() {
     }
 
     // Add Answer Key section
-    doc.addPage();
-    doc.setFontSize(16);
-    doc.setTextColor(0);
-    doc.setFont("RobotoRegular");
-    doc.text("Answer Key", 10, 10);
-    doc.setFont("helvetica");
+    const ansdoc = new jsPDF();
+    ansdoc.setProperties({
+        title: 'Answer Key',
+        subject: 'E6b Worksheet Generator Answer Key',
+        creator: 'Drew Bowen'
+    });
+    ansdoc.addFont(robotoRegular, "RobotoRegular", "normal");
+
+    ansdoc.setFontSize(16);
+    ansdoc.setTextColor(0);
+    ansdoc.setFont("RobotoRegular");
+    ansdoc.text("Answer Key", 10, 10);
+    ansdoc.setFont("helvetica");
 
     // Maximum y-position allowed on the page
-    var maxY = doc.internal.pageSize.getHeight();
+    var maxY = ansdoc.internal.pageSize.getHeight();
 
     yPos = 20;
     var xPos = 10;
@@ -186,14 +187,14 @@ function getSelectedOptions() {
     for (let i = 0; i < answer.length; i++) {
         var lineHeight = 5;
 
-        doc.setFontSize(10);
-        var numLines = Math.ceil((doc.getTextWidth(answer[i])+20) /  maxWidth);
-        var fullHeight = (doc.getTextDimensions(answer[i]).h + lineHeight)*numLines;
+        ansdoc.setFontSize(10);
+        var numLines = Math.ceil((ansdoc.getTextWidth(answer[i])+20) /  maxWidth);
+        var fullHeight = (ansdoc.getTextDimensions(answer[i]).h + lineHeight)*numLines;
 
-        doc.setFontSize(8);
+        ansdoc.setFontSize(8);
         for (let j = 0; j < solution[i].length; j++) {
-            numLines = Math.ceil(doc.getTextWidth(solution[i][j]+20) /  maxWidth);
-            fullHeight += (doc.getTextDimensions(solution[i][j]).h + lineHeight)*numLines;
+            numLines = Math.ceil(ansdoc.getTextWidth(solution[i][j]+20) /  maxWidth);
+            fullHeight += (ansdoc.getTextDimensions(solution[i][j]).h + lineHeight)*numLines;
         }
 
         // Check if adding the next line will exceed page
@@ -203,24 +204,24 @@ function getSelectedOptions() {
                 xPos = 110;
                 displaySide = true;
             } else {
-                doc.addPage();
+                ansdoc.addPage();
                 yPos = 10;
                 xPos = 10;
             }
         }
 
         // Add answer
-        doc.setFontSize(10);
-        doc.text((Number(i) + 1) + ". " + answer[i], xPos, yPos, { maxWidth: maxWidth });
+        ansdoc.setFontSize(10);
+        ansdoc.text((Number(i) + 1) + ". " + answer[i], xPos, yPos, { maxWidth: maxWidth });
         yPos += lineHeight;
 
         // Add solution
         for (let j = 0; j < solution[i].length; j++) {
-            doc.setFontSize(8);
-            numLines = Math.ceil(doc.getTextWidth(solution[i][j]+20) /  maxWidth);
-            Height = doc.getTextDimensions(solution[i][j]).h;
+            ansdoc.setFontSize(8);
+            numLines = Math.ceil(ansdoc.getTextWidth(solution[i][j]+20) /  maxWidth);
+            Height = ansdoc.getTextDimensions(solution[i][j]).h;
 
-            doc.text("- " + solution[i][j], xPos, yPos, { maxWidth: maxWidth });
+            ansdoc.text("- " + solution[i][j], xPos, yPos, { maxWidth: maxWidth });
             yPos += (numLines*(Height/2))+lineHeight;
         }
 
@@ -234,44 +235,52 @@ function getSelectedOptions() {
     document.body.style.maxWidth = "100%";
     document.body.style.width = "100%";
 
-    // Add notes
-
-    var note = document.createElement("p");
-    note.style.color = "#ff0000";
-    note.style.fontWeight = "700";
-    note.style.textAlign = "center";
-    note.textContent = "When printing Questions and Answer key will automatically be separated across pages. To print multiple Question sheets use the \"Pages\" drop-down within the print dialog to select desired pages to be printed. ";
-
-    document.body.appendChild(note);
-
     // Embed the PDF - Add button for IOS devices
     const isAppleDevice = /iPhone|iPad/.test(navigator.userAgent);
     const isIpad = /Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints && navigator.maxTouchPoints > 1;
     if (isAppleDevice || isIpad) {
-        var print = document.createElement("button");
-        print.classList.add("button");
-        print.textContent = "Print";
-        print.id = "printbutton"
-        print.style.display = 'block';
-        print.style.margin = '3em auto';
+        var printq = document.createElement("button");
+        printq.classList.add("button");
+        printq.textContent = "Print Questions";
+        printq.id = "printqbutton"
+        printq.style.display = 'block';
+        printq.style.margin = '3em auto';
 
-        document.body.appendChild(print);
+        var printa = document.createElement("button");
+        printa.classList.add("button");
+        printa.textContent = "Print Answer Key";
+        printa.id = "printabutton"
+        printa.style.display = 'block';
+        printa.style.margin = '3em auto';
 
-        document.getElementById('printbutton').addEventListener('click', function() {
-            doc.save('e6bworksheet.pdf');
+        document.body.appendChild(printq);
+        document.body.appendChild(printa);
+
+        document.getElementById('printqbutton').addEventListener('click', function() {
+            doc.save('e6bQuestions.pdf');
+        });
+        document.getElementById('printqbutton').addEventListener('click', function() {
+            ansdoc.save('e6bAnswerKey.pdf');
         });
     } else {
-        var embed = document.createElement('embed');
-        embed.src =  doc.output('datauristring');
-        embed.type = 'application/pdf';
-        embed.id = 'pdfViewer';
+        var embedq = document.createElement('embed');
+        embedq.src =  doc.output('datauristring');
+        embedq.type = 'application/pdf';
+        embedq.classList.add("pdfViewer");
 
-        document.body.appendChild(embed);
+        var embeda = document.createElement('embed');
+        embeda.src =  ansdoc.output('datauristring');
+        embeda.type = 'application/pdf';
+        embeda.classList.add("pdfViewer");
 
-        var embedPosition = embed.getBoundingClientRect();
+        document.body.appendChild(embedq);
+        document.body.appendChild(embeda);
+
+        var embedPosition = embedq.getBoundingClientRect();
         var currentYPos = embedPosition.top;
 
-        embed.style.height = (window.innerHeight-currentYPos) + 'px';
+        embedq.style.height = (window.innerHeight-currentYPos) + 'px';
+        embeda.style.height = (window.innerHeight-currentYPos) + 'px';
     }
 
     var bottom = document.createElement("p");
@@ -356,7 +365,7 @@ e6b.problems.heading = function () {
         e6b.fmt("Fly heading {{n}}°", p.heading),
         [
             e6b.fmt("Set the wind direction {{n}}° under the \"true index\" pointer", p.wdir),
-            e6b.fmt("Make a pencil mark for the wind speed {{n}} kt straight up from the centre grommet", p.wspeed),
+            e6b.fmt("Make a pencil mark for the wind speed {{n}} kt straight up from the center grommet", p.wspeed),
             e6b.fmt("Rotate to set the course {{n}}° next to the \"true index\" pointer", p.course),
             e6b.fmt("Slide the card until the pencil mark is over the true airspeed {{n}} kt", p.tas),
             e6b.fmt("Read the wind-correction angle {{n}}° to the {{s}} under the pencil mark",
@@ -379,10 +388,10 @@ e6b.problems.groundspeed = function () {
         e6b.fmt("{{n}} kt groundspeed", p.gs),
         [
             e6b.fmt("Rotate to set the wind direction {{n}}° under the \"true index\" pointer", p.wdir),
-            e6b.fmt("Make a pencil mark for the wind speed {{n}} kt straight up from the centre grommet", p.wspeed),
+            e6b.fmt("Make a pencil mark for the wind speed {{n}} kt straight up from the center grommet", p.wspeed),
             e6b.fmt("Rotate to set the course {{n}}° next to the \"true index\" pointer", p.course),
             e6b.fmt("Slide the card until the pencil mark is over the true airspeed {{n}} kt", p.tas),
-            e6b.fmt("Read the groundspeed {{n}} kt under the centre grommet", p.gs)
+            e6b.fmt("Read the groundspeed {{n}} kt under the center grommet", p.gs)
         ]
     ];
 };
@@ -399,7 +408,7 @@ e6b.problems.wind_aloft = function () {
         e6b.fmt("Wind from {{n}}° @ {{n}} kt", p.wdir, p.wspeed),
         [
             e6b.fmt("Rotate to set the course {{n}}° under the \"true index\" pointer", p.course),
-            e6b.fmt("Slide the card until the centre grommet is over the groundspeed {{n}} kt", p.gs),
+            e6b.fmt("Slide the card until the center grommet is over the groundspeed {{n}} kt", p.gs),
             e6b.fmt("Compare the course {{n}}° to the actual heading {{n}}° to get a wind-correction " +
                     "angle of {{n}}° to the {{s}}", p.course, p.heading, Math.abs(p.wca), p.crosswind_dir),
             e6b.fmt("Make a pencil mark where the {{n}}° wind-correction angle on the {{s}} side crosses the " +
