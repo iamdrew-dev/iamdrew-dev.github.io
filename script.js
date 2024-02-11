@@ -242,24 +242,24 @@ function getSelectedOptions() {
         var printq = document.createElement("button");
         printq.classList.add("button");
         printq.textContent = "Print Questions";
-        printq.id = "printqbutton"
+        printq.id = "printq"
         printq.style.display = 'block';
         printq.style.margin = '3em auto';
 
         var printa = document.createElement("button");
         printa.classList.add("button");
         printa.textContent = "Print Answer Key";
-        printa.id = "printabutton"
+        printa.id = "printa"
         printa.style.display = 'block';
         printa.style.margin = '3em auto';
 
         document.body.appendChild(printq);
         document.body.appendChild(printa);
 
-        document.getElementById('printqbutton').addEventListener('click', function() {
+        document.getElementById('printq').addEventListener('click', function() {
             doc.save('e6bQuestions.pdf');
         });
-        document.getElementById('printqbutton').addEventListener('click', function() {
+        document.getElementById('printa').addEventListener('click', function() {
             ansdoc.save('e6bAnswerKey.pdf');
         });
     } else {
