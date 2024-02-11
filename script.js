@@ -258,12 +258,12 @@ function getSelectedOptions() {
 
         document.getElementById('printq').addEventListener('click', function() {
             /* doc.save('e6bQuestions.pdf'); */
-            var pdfDataUri = doc.output('datauristring');
+            var pdfDataUri = doc.output('bloburl');
             window.open(pdfDataUri, '_blank');
         });
         document.getElementById('printa').addEventListener('click', function() {
             /* ansdoc.save('e6bAnswerKey.pdf'); */
-            var pdfDataUri = ansdoc.output('datauristring');
+            var pdfDataUri = ansdoc.output('bloburl');
             window.open(pdfDataUri, '_blank');
         });
     } else {
