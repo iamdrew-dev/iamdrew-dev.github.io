@@ -237,7 +237,8 @@ function getSelectedOptions() {
 
     // Embed the PDF - Add button for IOS devices
     const isAppleDevice = /iPhone|iPad/.test(navigator.userAgent);
-    if (isAppleDevice) {
+    const isIpad = /Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints && navigator.maxTouchPoints > 1;
+    if (isAppleDevice || isIpad) {
         var print = document.createElement("button");
         print.classList.add("button");
         print.textContent = "Print";
