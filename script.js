@@ -94,13 +94,20 @@ function getSelectedOptions() {
 
     var img = new Image();
     img.src = 'images/cwlogo.jpg';
-
     img.onload = function() {
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+        var dataURL = canvas.toDataURL('image/jpeg');
         var imgWidth = img.width / 100;
         var pdfWidth = doc.internal.pageSize.getWidth();
         var x = (pdfWidth - imgWidth) / 2;
-        doc.addImage(img, 'JPEG', x, 10, imgWidth, img.height / 100);
+        doc.addImage(dataURL, 'JPEG', x, 10, imgWidth, img.height / 100);
+        canvas = null;
     };
+
 
     doc.setFontSize(12);
     doc.setTextColor(0);
