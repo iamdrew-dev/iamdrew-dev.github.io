@@ -2,8 +2,6 @@
 // Script to generate E6B problems dynamically.
 ////////////////////////////////////////////////////////////////////////
 
-const { jsPDF } = window.jspdf;
-
 const value = document.querySelector("#value");
 const input = document.querySelector("#tprob");
 input.addEventListener("input", (event) => {
@@ -76,12 +74,44 @@ selectWrittenCheckbox.checked = false;
 // Build the Worksheet
 ////////////////////////////////////////////////////////////////////////
 
-var robotoRegular = "font/RobotoCondensed-SemiBold.ttf";
+function printPage() {
+    window.print();
+}
+
+window.addEventListener('beforeprint', function() {
+    var printButton = document.getElementById('printbutton');
+    if (printButton) {
+        printButton.parentNode.removeChild(printButton);
+    }
+    var note = document.getElementById('note');
+    if (note) {
+        note.parentNode.removeChild(note);
+    }
+});
+
+window.addEventListener('afterprint', function() {
+    var print = document.createElement("button");
+    print.classList.add("button");
+    print.id = 'printbutton'
+    print.textContent = "Print";
+    print.onclick = printPage;
+    print.style.display = 'block';
+    print.style.margin = '3em auto';
+
+    var note = document.createElement("p");
+    note.id = 'note'
+    note.style.textAlign = "center";
+    note.style.color = "#ff0000";
+    note.style.fontSize = "2em";
+    note.style.fontWeight = "700";
+    note.textContent = "When printing Questions and Answer key will automatically be seperated accross pages. To print multiple Question sheets use the \"Pages\" drop-down within the print dialog to select desired pages to be print.";
+
+    document.getElementById('settings').appendChild(print);
+    document.getElementById('settings').appendChild(note);
+});
 
 // Get all slected checkboxes when Generate Worksheet is pressed
 function getSelectedOptions() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
     const selectedOptions = [input.value];
 
     for (const checkbox of optionCheckboxes) {
@@ -89,166 +119,154 @@ function getSelectedOptions() {
             selectedOptions.push(checkbox.value);
         }
     }
-    const doc = new jsPDF();
-    doc.addFont(robotoRegular, "RobotoRegular", "normal");
 
-    var img = new Image();
-    img.src = 'images/cwlogo.jpg';
-    var imgWidth = img.width/100;
-    var pdfWidth = doc.internal.pageSize.getWidth();
-    var x = (pdfWidth - imgWidth) / 2;
+    // Remove everything from webpage before populating 
+    document.getElementById('settings').innerHTML = "";
 
-    doc.addImage(img, 'JPEG', x, 10, imgWidth, img.height/100);
+    // Add Print button
 
-    doc.setFontSize(12);
-    doc.setTextColor(0);
-    doc.setFont("helvetica");
-    doc.text("Name:_________________________", 15, 55);
-    doc.text("Date:_________________________", 130, 55);
+    var print = document.createElement("button");
+    print.classList.add("button");
+    print.id = 'printbutton'
+    print.textContent = "Print";
+    print.onclick = printPage;
+    print.style.display = 'block';
+    print.style.margin = '3em auto';
 
-    // Populate questions and answers
+    // Add notes
+
+    var note = document.createElement("p");
+    note.id = 'note'
+    note.style.textAlign = "center";
+    note.style.color = "#ff0000";
+    note.style.fontSize = "2em";
+    note.style.fontWeight = "700";
+    note.textContent = "When printing Questions and Answer key will automatically be seperated accross pages. To print multiple Question sheets use the \"Pages\" drop-down within the print dialog to select desired pages to be print.";
+
+    // Add Name, Date and Crosswinds Logo
+
+    var topSection = document.createElement("section");
+
+    var logoContainer = document.createElement("div");
+    logoContainer.id = 'logo-container';
+
+    var logo = document.createElement("img");
+    logo.src = "images/cwlogo.jpg";
+    logo.alt = "Crosswinds Aviation";
+    logo.style.maxWidth = "25%"
+    logo.style.marginBottom = "2em"
+    logo.id = 'logo';
+
+    var name = document.createElement("p");
+    name.style.float = "left";
+    name.textContent = "Name:_________________________";
+
+    var date = document.createElement("p");
+    date.style.float = "right";
+    date.textContent = "Date:_________________________";
+
+    logoContainer.appendChild(logo);
+    topSection.appendChild(print);
+    topSection.appendChild(note);
+    topSection.appendChild(logoContainer);
+    topSection.appendChild(name);
+    topSection.appendChild(date);
+    document.body.appendChild(topSection);
+
+
+    // populate questions and answers
+
     const question = [];
     const answer = [];
     const solution = [];
     var problems = e6b.problems;
 
-    let yPos = 70; // Question Y Start
-    var maxWidth = 180;
-
     while (question.length < selectedOptions[0]) {
-        var options = selectedOptions.slice(1); // exclude amount of questions from beginning of array
+        var options = selectedOptions.slice(1); // Exclude the first element, which is the number of options needed
 
-        options.sort(() => Math.random() - 0.5); // shuffle array
+        // Shuffle the options array to introduce randomness
+        options.sort(() => Math.random() - 0.5);
 
         for (let i = 0; i < options.length; i++) {
-            if (question.length >= selectedOptions[0]) {
-                // If we have enough elements in the question array, exit the loop
-                break;
-            }
-    
-            var problem = problems[options[i]]()
-    
-            question.push(problem[0]);
-            answer.push(problem[1]);
-            solution.push(problem[2]);
+        if (question.length >= selectedOptions[0]) {
+            // If we have enough elements in the question array, exit the loop
+            break;
+        }
+
+        var problem = problems[options[i]]()
+
+        question.push(problem[0]);
+        answer.push(problem[1]);
+        solution.push(problem[2]);
         }
     }
-
-    // Maximum y-position allowed on the page
-    var maxY = doc.internal.pageSize.getHeight() - 20;
 
     for (let i in question) {
-        // Calculate the height of the current line
-        var lineHeight = 10;
-        var questionHeight = doc.getTextDimensions(question[i]).h;
 
-        // Calculate the number of lines required for the question
-        var numLines = Math.ceil((doc.getTextWidth(question[i])+20) /  maxWidth);
+        // Create the Question paragraph element
+        var qn = document.createElement("p");
+        qn.id = "number";
+        var number = Number(i)+1;
+        qn.textContent = number + ".";
 
-        // Check if adding the next line will exceed page
-        if (yPos + numLines * lineHeight > maxY) {
-            doc.addPage();
-            yPos = 20;
-        }
+        var q = document.createElement("p");
+        q.id = "question";
+        q.textContent = question[i];
 
-        doc.text(String(Number(i) + 1) + ".", 10, yPos);
-        doc.text(question[i], 20, yPos, { maxWidth: maxWidth });
-
-        yPos += (numLines * questionHeight) + lineHeight;
+        document.body.appendChild(qn);
+        document.body.appendChild(q);
     }
 
-    // Add Answer Key section
-    doc.addPage();
-    doc.setFontSize(16);
-    doc.setTextColor(0);
-    doc.setFont("RobotoRegular");
-    doc.text("Answer Key", 10, 10);
-    doc.setFont("helvetica");
+    // make answer key section so that a page break can be added to seperate from questions
+    var answerkey = document.createElement("section");
+    answerkey.id = "answerkey";
 
-    // Maximum y-position allowed on the page
-    var maxY = doc.internal.pageSize.getHeight();
+    var answerkeyTitle = document.createElement("h3");
+    answerkeyTitle.textContent = "Answer Key";
 
-    yPos = 20;
-    var xPos = 10;
+    answerkey.appendChild(answerkeyTitle);
 
-    var displaySide = false;
-    maxWidth = 90;
+    for  (let i in answer) {
+        // Create the Answer paragraph element
+        var an = document.createElement("p");
+        an.id = "number";
+        var number = Number(i)+1;
+        an.textContent = number + ".";
 
-    for (let i = 0; i < answer.length; i++) {
-        var lineHeight = 5;
+        var a = document.createElement("p");
+        a.id = "answer";
+        a.textContent =  answer[i];
 
-        doc.setFontSize(10);
-        var numLines = Math.ceil((doc.getTextWidth(answer[i])+20) /  maxWidth);
-        var fullHeight = (doc.getTextDimensions(answer[i]).h + lineHeight)*numLines;
+        // Create the ordered list element
+        var s = document.createElement("ol");
+        s.id = "help-steps";
 
-        doc.setFontSize(8);
-        for (let j = 0; j < solution[i].length; j++) {
-            numLines = Math.ceil(doc.getTextWidth(solution[i][j]+20) /  maxWidth);
-            fullHeight += (doc.getTextDimensions(solution[i][j]).h + lineHeight)*numLines;
+        // Populate the ordered list with list items
+        for (let z of solution[i]) {
+            var li = document.createElement("li");
+            li.textContent = z;
+            s.appendChild(li);
         }
 
-        // Check if adding the next line will exceed page
-        if (yPos + fullHeight > maxY) {
-            if (displaySide == false) {
-                yPos = 20;
-                xPos = 110;
-                displaySide = true;
-            } else {
-                doc.addPage();
-                yPos = 10;
-                xPos = 10;
-            }
-        }
+        // Create the section element and append the header and ordered list
+        var section = document.createElement("section");
+        section.id = "help";
+        section.appendChild(s);
 
-        // Add answer
-        doc.setFontSize(10);
-        doc.text((Number(i) + 1) + ". " + answer[i], xPos, yPos, { maxWidth: maxWidth });
-        yPos += lineHeight;
+        // Contain all of solution so it does get cut-off
 
-        // Add solution
-        for (let j = 0; j < solution[i].length; j++) {
-            doc.setFontSize(8);
-            numLines = Math.ceil(doc.getTextWidth(solution[i][j]+20) /  maxWidth);
-            Height = doc.getTextDimensions(solution[i][j]).h;
+        var finalSolution = document.createElement("section");
+        finalSolution.id = "finalSolution";
+        finalSolution.appendChild(an);
+        finalSolution.appendChild(a);
+        finalSolution.appendChild(section);
 
-            doc.text("- " + solution[i][j], xPos, yPos, { maxWidth: maxWidth });
-            yPos += (numLines*(Height/2))+lineHeight;
-        }
-
-        yPos += lineHeight;
+        // Append the paragraphs and the section to the body
+        
+        
+        answerkey.appendChild(finalSolution);
     }
-
-
-    var pdfData = doc.output('datauristring');
-
-    // Remove everything from webpage before populating 
-    document.getElementById('settings').innerHTML = "";
-    document.body.style.margin = "0";
-    document.body.style.paddingBottom = "0";
-    document.body.style.maxWidth = "100%";
-    document.body.style.width = "100%";
-
-    // Add notes
-
-    var note = document.createElement("p");
-    note.style.color = "#ff0000";
-    note.style.fontSize = "2em";
-    note.style.fontWeight = "700";
-    note.style.textAlign = "center";
-    note.textContent = "When printing Questions and Answer key will automatically be separated across pages. To print multiple Question sheets use the \"Pages\" drop-down within the print dialog to select desired pages to be printed.";
-
-    document.body.appendChild(note);
-
-    // Embed the PDF in an iframe
-    var iframe = document.createElement('iframe');
-    iframe.src = pdfData;
-    iframe.id = 'pdfViewer';
-    document.body.appendChild(iframe);
-
-    var iframePosition = iframe.getBoundingClientRect();
-    var currentYPos = iframePosition.top;
-
-    iframe.style.height = (window.innerHeight-currentYPos) + 'px';
+    document.body.appendChild(answerkey);
 }
 
 
