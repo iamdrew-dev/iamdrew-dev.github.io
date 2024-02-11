@@ -237,7 +237,7 @@ function getSelectedOptions() {
 
     // Embed the PDF in an iframe - mobile google pdf viewer
     if (window.innerWidth <= 1025) {
-        var pdfBlob = doc.output('blob');
+        var pdfBlob = doc.output('blob').slice(5);
 
         // Create a Blob URL for the PDF
         var blobUrl = URL.createObjectURL(pdfBlob);
