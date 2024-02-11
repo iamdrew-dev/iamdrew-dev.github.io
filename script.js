@@ -235,11 +235,15 @@ function getSelectedOptions() {
 
     document.body.appendChild(note);
 
-    // Embed the PDF
-    var embed = document.createElement('embed');
-    embed.src =  doc.output('datauristring');
-    embed.type = 'application/pdf';
-    embed.id = 'pdfViewer';
+    // Embed the PDF in an iframe - mobile google pdf viewer
+    if (window.innerWidth <= 1025) {
+        doc.save('e6bworksheet.pdf');
+    } else {
+        var embed = document.createElement('embed');
+        embed.src =  doc.output('datauristring');
+        embed.type = 'application/pdf';
+        embed.id = 'pdfViewer';
+    }
     
     document.body.appendChild(embed);
 
