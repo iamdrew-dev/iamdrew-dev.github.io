@@ -28,15 +28,8 @@ h1{
 h3{
     font-family:'Roboto Condensed',Helvetica,Arial,sans-serif
 }
-@media (max-width:480px){
-    p{
-        font-size:1rem
-    }
-}
-@media (min-width:481px){
-    p{
-        font-size:1rem
-    }
+p{
+    font-size:1rem
 }
 #pdfViewer {
     width: 100vw;

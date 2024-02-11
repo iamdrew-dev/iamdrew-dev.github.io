@@ -218,9 +218,6 @@ function getSelectedOptions() {
         yPos += lineHeight;
     }
 
-
-    var pdfData = doc.output('datauristring');
-
     // Remove everything from webpage before populating 
     document.getElementById('settings').innerHTML = "";
     document.body.style.margin = "0";
@@ -238,11 +235,20 @@ function getSelectedOptions() {
 
     document.body.appendChild(note);
 
-    // Embed the PDF in an iframe
-    var iframe = document.createElement('iframe');
-    iframe.src = pdfData;
-    iframe.id = 'pdfViewer';
+    // Embed the PDF in an iframe - mobile google pdf viewer
+    if (window.innerWidth <= 1025) {
+        var iframe = document.createElement('iframe');
+        iframe.src = "https://drive.google.com/viewerng/viewer?embedded=true&url=" + doc.output('bloburl');
+        iframe.id = 'pdfViewer';
+    } else {
+        var iframe = document.createElement('iframe');
+        iframe.src = doc.output('datauristring');;
+        iframe.id = 'pdfViewer';
+    }
+    
     document.body.appendChild(iframe);
+
+    // <iframe class="mobile-pdf" scrolling="auto" src="https://drive.google.com/viewerng/viewer?embedded=true&url=URL HERE" width="100%" height="90%" type='application/pdf' title="Title"> 1025px
 
     var iframePosition = iframe.getBoundingClientRect();
     var currentYPos = iframePosition.top;
