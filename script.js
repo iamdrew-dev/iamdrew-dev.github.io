@@ -237,9 +237,18 @@ function getSelectedOptions() {
 
     // Embed the PDF in an iframe - mobile google pdf viewer
     if (window.innerWidth <= 1025) {
-        var iframe = document.createElement('iframe');
-        iframe.src = "https://drive.google.com/viewerng/viewer?embedded=true&url=" + doc.output('bloburl');
-        iframe.id = 'pdfViewer';
+        var pdfBlob = doc.output('blob');
+
+        // Create a Blob URL for the PDF
+        var blobUrl = URL.createObjectURL(pdfBlob);
+
+        // Redirect to the Google Drive PDF viewer with the Blob URL
+        var googleDriveViewerUrl = 'https://drive.google.com/viewerng/viewer?url=' + encodeURIComponent(blobUrl);
+        window.location.href = googleDriveViewerUrl;
+        /* var iframe = document.createElement('iframe');
+        var url = doc.output('bloburl').slice(5);
+        iframe.src = "https://drive.google.com/viewerng/viewer?embedded=true&url=" + url;
+        iframe.id = 'pdfViewer'; */
     } else {
         var iframe = document.createElement('iframe');
         iframe.src = doc.output('datauristring');;
