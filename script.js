@@ -237,7 +237,7 @@ function getSelectedOptions() {
 
     // Embed the PDF in an iframe - mobile google pdf viewer
     if (window.innerWidth <= 1025) {
-        var pdfBlob = doc.output('blob').slice(5);
+        var pdfBlob = doc.output('blob');
 
         // Create a Blob URL for the PDF
         var blobUrl = URL.createObjectURL(pdfBlob);
@@ -245,6 +245,9 @@ function getSelectedOptions() {
         // Redirect to the Google Drive PDF viewer with the Blob URL
         var googleDriveViewerUrl = 'https://drive.google.com/viewerng/viewer?url=' + encodeURIComponent(blobUrl);
         window.location.href = googleDriveViewerUrl;
+
+        console.log(pdfBlob, blobUrl, googleDriveViewerUrl);
+
         /* var iframe = document.createElement('iframe');
         var url = doc.output('bloburl').slice(5);
         iframe.src = "https://drive.google.com/viewerng/viewer?embedded=true&url=" + url;
