@@ -257,10 +257,14 @@ function getSelectedOptions() {
         document.body.appendChild(printa);
 
         document.getElementById('printq').addEventListener('click', function() {
-            doc.save('e6bQuestions.pdf');
+            /* doc.save('e6bQuestions.pdf'); */
+            var pdfDataUri = doc.output('datauristring');
+            window.open(pdfDataUri, '_blank');
         });
         document.getElementById('printa').addEventListener('click', function() {
-            ansdoc.save('e6bAnswerKey.pdf');
+            /* ansdoc.save('e6bAnswerKey.pdf'); */
+            var pdfDataUri = ansdoc.output('datauristring');
+            window.open(pdfDataUri, '_blank');
         });
     } else {
         var embedq = document.createElement('embed');
