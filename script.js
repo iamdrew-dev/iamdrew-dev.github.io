@@ -235,40 +235,18 @@ function getSelectedOptions() {
 
     document.body.appendChild(note);
 
-    // Embed the PDF in an iframe - mobile google pdf viewer
-    if (window.innerWidth <= 1025) {
-        var pdfBlob = doc.output('blob');
-
-        // Convert the Blob into a data URL
-        var reader = new FileReader();
-        reader.onloadend = function() {
-        // Get the data URL representing the PDF Blob
-        var dataUrl = reader.result;
-
-        // Redirect to the Google Drive PDF viewer with the data URL
-        var googleDriveViewerUrl = 'https://drive.google.com/viewerng/viewer?url=' + encodeURIComponent(dataUrl);
-        window.open(googleDriveViewerUrl, '_blank');
-        };
-        reader.readAsDataURL(pdfBlob);
-
-        /* var iframe = document.createElement('iframe');
-        var url = doc.output('bloburl').slice(5);
-        iframe.src = "https://drive.google.com/viewerng/viewer?embedded=true&url=" + url;
-        iframe.id = 'pdfViewer'; */
-    } else {
-        var iframe = document.createElement('iframe');
-        iframe.src = doc.output('datauristring');;
-        iframe.id = 'pdfViewer';
-    }
+    // Embed the PDF
+    var embed = document.createElement('embed');
+    embed.src =  doc.output('datauristring');
+    embed.type = 'application/pdf';
+    embed.id = 'pdfViewer';
     
-    document.body.appendChild(iframe);
+    document.body.appendChild(embed);
 
-    // <iframe class="mobile-pdf" scrolling="auto" src="https://drive.google.com/viewerng/viewer?embedded=true&url=URL HERE" width="100%" height="90%" type='application/pdf' title="Title"> 1025px
+    var embedPosition = embed.getBoundingClientRect();
+    var currentYPos = embedPosition.top;
 
-    var iframePosition = iframe.getBoundingClientRect();
-    var currentYPos = iframePosition.top;
-
-    iframe.style.height = (window.innerHeight-currentYPos) + 'px';
+    embed.style.height = (window.innerHeight-currentYPos) + 'px';
 }
 
 
