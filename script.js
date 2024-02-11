@@ -236,7 +236,7 @@ function getSelectedOptions() {
     document.body.appendChild(note);
 
     // Embed the PDF in an iframe - mobile google pdf viewer
-    if (window.innerWidth <= 1025) {
+    if (window.innerWidth <= 600) {
         var print = document.createElement("button");
         print.classList.add("button");
         print.textContent = "Print";
