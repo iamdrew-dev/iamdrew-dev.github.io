@@ -235,8 +235,9 @@ function getSelectedOptions() {
 
     document.body.appendChild(note);
 
-    // Embed the PDF in an iframe - mobile google pdf viewer
-    if (window.innerWidth <= 600) {
+    // Embed the PDF - Add button for IOS devices
+    const isAppleDevice = /iPhone|iPad/.test(navigator.userAgent);
+    if (isAppleDevice) {
         var print = document.createElement("button");
         print.classList.add("button");
         print.textContent = "Print";
