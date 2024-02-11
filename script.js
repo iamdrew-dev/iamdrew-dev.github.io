@@ -237,20 +237,31 @@ function getSelectedOptions() {
 
     // Embed the PDF in an iframe - mobile google pdf viewer
     if (window.innerWidth <= 1025) {
-        doc.save('e6bworksheet.pdf');
+        var print = document.createElement("button");
+        print.classList.add("button");
+        print.textContent = "Print";
+        print.id = "printbutton"
+        print.style.display = 'block';
+        print.style.margin = '3em auto';
+
+        document.body.appendChild(print);
+
+        document.getElementById('printbutton').addEventListener('click', function() {
+            doc.save('e6bworksheet.pdf');
+        });
     } else {
         var embed = document.createElement('embed');
         embed.src =  doc.output('datauristring');
         embed.type = 'application/pdf';
         embed.id = 'pdfViewer';
+
+        document.body.appendChild(embed);
+
+        var embedPosition = embed.getBoundingClientRect();
+        var currentYPos = embedPosition.top;
+
+        embed.style.height = (window.innerHeight-currentYPos) + 'px';
     }
-    
-    document.body.appendChild(embed);
-
-    var embedPosition = embed.getBoundingClientRect();
-    var currentYPos = embedPosition.top;
-
-    embed.style.height = (window.innerHeight-currentYPos) + 'px';
 }
 
 
