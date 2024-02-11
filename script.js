@@ -231,7 +231,7 @@ function getSelectedOptions() {
     note.style.color = "#ff0000";
     note.style.fontWeight = "700";
     note.style.textAlign = "center";
-    note.textContent = "When printing Questions and Answer key will automatically be separated across pages. To print multiple Question sheets use the \"Pages\" drop-down within the print dialog to select desired pages to be printed. " + navigator.userAgent;
+    note.textContent = "When printing Questions and Answer key will automatically be separated across pages. To print multiple Question sheets use the \"Pages\" drop-down within the print dialog to select desired pages to be printed. ";
 
     document.body.appendChild(note);
 
@@ -264,6 +264,15 @@ function getSelectedOptions() {
 
         embed.style.height = (window.innerHeight-currentYPos) + 'px';
     }
+
+    var bottom = document.createElement("p");
+    bottom.textContent = navigator.userAgent;
+    bottom.style.position = "fixed";
+    bottom.style.bottom = "10px";
+    bottom.style.textAlign = "center";
+    bottom.style.color = "rgba(0, 0, 0, 0.5)";
+    bottom.style.fontSize = "8px";
+    document.body.appendChild(bottom);
 }
 
 
