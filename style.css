@@ -245,6 +245,7 @@ input:checked+.sliderx:before{
     }
     .toggle-container{
         position:relative;
+        padding-top: 0.03rem;
     }
 }
 @media (max-width: 600px) {
