@@ -297,6 +297,45 @@ function getSelectedOptions() {
     document.body.appendChild(bottom);
 }
 
+const intOptions = [];
+
+// Get all slected checkboxes when start is pressed and begin interactive mode
+function startInteractiveMode() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    document.getElementById("settings").style.setProperty('display', 'none');
+    document.getElementById("interactive").style.setProperty('display', 'block');
+    document.body.style.maxWidth = "100%";
+    document.body.style.width = "100%";
+
+    for (const checkbox of optionCheckboxes) {
+        if (checkbox.checked) {
+            intOptions.push(checkbox.value);
+        }
+    }
+
+    var problems = e6b.problems;
+
+    var problem = problems[intOptions[Math.floor(Math.random() * intOptions.length)]]();
+
+    document.getElementById('question').innerHTML = problem[0];
+    document.getElementById('answerheader').innerHTML = problem[1];
+    document.getElementById('answer').innerHTML = problem[2].join('<br><br>');
+
+    // Remove everything from webpage before populating 
+    document.getElementById('settings').innerHTML = "";
+}
+
+function getNewQuestion() {
+    var problems = e6b.problems;
+
+    var problem = problems[intOptions[Math.floor(Math.random() * intOptions.length)]]();
+
+    document.getElementById('question').innerHTML = problem[0];
+    document.getElementById('answerheader').innerHTML = problem[1];
+    document.getElementById('answer').innerHTML = problem[2].join('<br><br>');
+}
+
 
 /**
  * Top-level object (for encapsulation)
@@ -1265,19 +1304,11 @@ e6b.fmt = function (fmt) {
 - update solutions with non-e6b ways of solving
 */
 
-function toggleAccordion(element) {
-    var content = element.nextElementSibling;
-    var overlay = document.getElementById('overlay');
-
-    if (content.style.display === "block") {
-        content.style.display = "none";
-        overlay.style.display = "none";
-    } else {
-        content.style.display = "block";
-        overlay.style.display = "block";
-    }
-}
-
 document.getElementById("colorToggle").addEventListener("change", function() {
     document.documentElement.style.setProperty('--default-color', this.checked ? '#00773c' : '#21409a');
+
+    document.getElementById("gen").style.setProperty('display', this.checked ? 'none' : 'block');
+    document.getElementById("prob").style.setProperty('display', this.checked ? 'none' : 'block');
+    document.getElementById("str").style.setProperty('display', this.checked ? 'block' : 'none');
+    document.getElementById("mode").textContent = this.checked ? 'Interactive Mode' : 'Worksheet Mode';
 });

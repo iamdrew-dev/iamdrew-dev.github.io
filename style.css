@@ -67,6 +67,9 @@ label {
 .button:hover{
     opacity:.9
 }
+.sliderdiv {
+    width: 15rem;
+}
 .slider{
     -webkit-appearance:none;
     width:100%;
@@ -75,7 +78,8 @@ label {
     background:#ccc;
     outline:0;
     -webkit-transition:.2s;
-    transition:opacity .2s
+    transition:opacity .2s;
+    margin:0;
 }
 .slider::-webkit-slider-thumb{
     -webkit-appearance:none;
@@ -166,33 +170,20 @@ label {
     text-align:center;
     padding:2em 0
 }
-.options-table{
-    margin-left:auto;
-    margin-right:auto
-}
-.options-table td{
-    padding:0 30px
-}
-.overlay{
-    display:none;
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,.7);
-    z-index:1
+.options {
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    gap: auto;
+    justify-items: center;
+    padding:2rem;
+    height:5rem;
 }
 .toggle-container{
-    position:fixed;
-    top:10px;
-    left:10px;
     display:flex;
     align-items:center
 }
 .switch{
     position:relative;
-    display:inline-block;
     width:60px;
     height:34px
 }
@@ -230,9 +221,28 @@ input:checked+.sliderx:before{
     -ms-transform:translateX(26px);
     transform:translateX(26px)
 }
+#qacontainer {
+    text-align: center;
+    margin-top: 10rem;
+}
+#question {
+    margin: 10rem 2rem;
+}
+#solution {
+    display: none;
+}
+#answer {
+    margin: 0 2rem;
+    margin-bottom: 10rem;
+    line-height: 2rem;
+}
 @media (max-width: 1000px) {
     label {
         font-size: 12px;
+    }
+    body {
+        max-width: 90%;
+        width: 90%;
     }
 }
 @media (max-width: 870px) {
@@ -243,9 +253,19 @@ input:checked+.sliderx:before{
     h3 {
         padding-left: 1rem;
     }
-    .toggle-container{
-        position:relative;
-        padding-top: 0.03rem;
+    .options {
+        display:flex;
+        flex-direction: column;
+        justify-content:center;
+        align-items:center;
+        padding:auto;
+        height:auto;
+    }
+    .toggle-container {
+        margin-bottom: 3rem;
+    }
+    .sliderdiv {
+        margin-bottom: 2rem;
     }
 }
 @media (max-width: 600px) {
@@ -260,17 +280,11 @@ input:checked+.sliderx:before{
         top:calc(100% - 31px);
         left:calc(50% - 11px);
     }
-    .options-table td {
-        padding: 20px;
+    #qacontainer {
+        font-size: 14px;
+    }
+    #qacontainer p {
+        font-size: 10px;
     }
 }
-@media (max-width: 400px) {
-    .button{
-        font-size:10px;
-        min-width:80px;
-        font-weight:900;
-    }
-    .options-table td {
-        padding: 10px;
-    }
-}
+
