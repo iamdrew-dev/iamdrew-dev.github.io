@@ -28,6 +28,10 @@ h1{
 h3{
     font-family:'Roboto Condensed',Helvetica,Arial,sans-serif
 }
+h2{
+    font-size:137.1%;
+    font-family:'Roboto Condensed',Helvetica,Arial,sans-serif
+}
 p{
     font-size:1rem
 }
@@ -294,6 +298,9 @@ input:checked+.sliderx:before{
         margin: 0 2rem;
         margin-bottom: 100%;
         line-height: 1rem;
+    }
+    #answerheader {
+        margin-bottom: 1.5rem;
     }
 }
 
