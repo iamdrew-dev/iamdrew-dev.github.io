@@ -285,6 +285,15 @@ input:checked+.sliderx:before{
     }
     #qacontainer p {
         font-size: 10px;
+        margin-top: 5rem;
+    }
+    #question {
+        margin: 5rem 2rem;
+    }
+    #answer {
+        margin: 0 2rem;
+        margin-bottom: 5rem;
+        line-height: 2rem;
     }
 }
 
