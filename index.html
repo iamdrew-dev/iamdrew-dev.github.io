@@ -4,7 +4,7 @@
     <title>Crosswinds Aviation E6B Practice</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="style.css?v=2.1" />
+    <link rel="stylesheet" href="style.css?v=2.2" />
     <link rel="icon" type="image/png" sizes="75x75" href="images/icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -278,19 +278,20 @@
     </div>
     <div id="interactive" style="display: none;">
       <div style="background-color: #00773c;padding: 10px;text-align: left;">
-          <button class="button" style="background-color:#ccc;color:#1e1e1e;margin-left: 1rem;" onclick="location.reload();">Go Back</button>
+          <button class="button" style="background-color:#ccc;color:#1e1e1e;margin-left: 1rem;" onclick="location.reload();">Home</button>
+          <button class="button" style="background-color:#ccc;color:var(--default-color);margin-right: 1rem;float: right;" onclick="document.getElementById('solution').style.setProperty('display', 'none');document.getElementById('reveal').style.setProperty('display', 'inline-block');getNewQuestion();">Next</button>
       </div>
       
       <div id="qacontainer">
           <h1 id="question">Whoops, this is embarassing... there should be a question here. Please reload</h1>
-          <button id="reveal" class="button" onclick="document.getElementById('solution').style.setProperty('display', 'block');document.getElementById('reveal').style.setProperty('display', 'none');document.getElementById('next').style.setProperty('display', 'inline-block');">Reveal Answer</button>
+          <button id="reveal" class="button" onclick="document.getElementById('solution').style.setProperty('display', 'block');document.getElementById('reveal').style.setProperty('display', 'none');">Reveal Answer</button>
           <div id="solution" style="background-color: #eee;padding: 2rem 0;">
             <h3 id="answerheader">Still nothing here.</h3>
             <p id="answer">nice try though.</p>
-            <button id="next" style="display: none;" class="button" onclick="document.getElementById('solution').style.setProperty('display', 'none');document.getElementById('reveal').style.setProperty('display', 'inline-block');document.getElementById('next').style.setProperty('display', 'none');getNewQuestion();">Next Question</button>
           </div>
+      </div>
     </div>
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
-    <script src="script.js?v=2.14"></script>
+    <script src="script.js?v=2.15"></script>
   </body>
 </html>
