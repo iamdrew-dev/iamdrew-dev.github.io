@@ -10,15 +10,15 @@ input.addEventListener("input", (event) => {
 value.textContent = "Total Problems: " + event.target.value;
 });
 
-// JavaScript to handle "Select All/Common/Written" functionality
+// Handle "Select All/Common/Written" functionality
 const selectAllCheckbox = document.getElementById('selectAll');
 const selectCommonCheckbox = document.getElementById('common');
 const selectWrittenCheckbox = document.getElementById('written');
-const optionCheckboxes = document.querySelectorAll('input[name="option"]');
+const e6bOptionCheckboxes = document.querySelectorAll('input[name="e6boption"]');
 
 // Select all common e6b cross-country calculations
 selectCommonCheckbox.addEventListener('change', function() {
-for (const checkbox of optionCheckboxes) {
+for (const checkbox of e6bOptionCheckboxes) {
     checkbox.checked = this.unchecked;
 
     (checkbox.value == 'heading') ? checkbox.checked = true : false;
@@ -38,7 +38,7 @@ selectWrittenCheckbox.checked = false;
 
 // Select all common e6b calculations for the PPL written exam
 selectWrittenCheckbox.addEventListener('change', function() {
-for (const checkbox of optionCheckboxes) {
+for (const checkbox of e6bOptionCheckboxes) {
     checkbox.checked = this.unchecked;
 
     (checkbox.value == 'heading') ? checkbox.checked = true : false;
@@ -65,12 +65,158 @@ selectCommonCheckbox.checked = false;
 
 // Select all questions to be randomly selected
 selectAllCheckbox.addEventListener('change', function() {
-for (const checkbox of optionCheckboxes) {
+for (const checkbox of e6bOptionCheckboxes) {
     checkbox.checked = this.checked;
 }
 selectCommonCheckbox.checked = false;
 selectWrittenCheckbox.checked = false;
 });
+
+const diamond40 = document.getElementById('da40');
+const diamond20 = document.getElementById('da20');
+const cessna172 = document.getElementById('c172');
+const perfOptionCheckboxes = document.querySelectorAll('input[name="perfoption"]');
+
+// Make sure only one plane selected for performance calculations
+diamond40.addEventListener('change', function() {
+    if (diamond40.checked == true) {
+        diamond20.checked = false;
+        cessna172.checked = false;
+    } else {
+        diamond40.checked = true;
+    }
+});
+diamond20.addEventListener('change', function() {
+    if (diamond20.checked == true) {
+        diamond40.checked = false;
+        cessna172.checked = false;
+    } else {
+        diamond20.checked = true;
+    }
+});
+cessna172.addEventListener('change', function() {
+    if (cessna172.checked == true) {
+        diamond20.checked = false;
+        diamond40.checked = false;
+    } else {
+        cessna172.checked = true;
+    }
+});
+
+////////////////////////////////////////////////////////////////////////
+// Generate and Organize Questions, Answers and Soluutions
+////////////////////////////////////////////////////////////////////////
+
+function starte6b(mode) {
+    document.getElementById("logo-container").style.setProperty('display', 'none');
+
+    var selectedOptions = [];
+
+    for (const checkbox of e6bOptionCheckboxes) {
+        if (checkbox.checked) {
+            selectedOptions.push(checkbox.value);
+        }
+    }
+
+    var problems = e6b.problems;    
+
+    if (mode == true) {
+        var numOfProbs = input.value;
+
+        const question = [];
+        const answer = [];
+        const solution = [];
+
+        while (question.length < numOfProbs) {
+            selectedOptions.sort(() => Math.random() - 0.5); // shuffle array
+    
+            for (let i = 0; i < selectedOptions.length; i++) {
+                if (question.length >= numOfProbs) {
+                    // If we have enough elements in the question array, exit the loop
+                    break;
+                }
+        
+                var problem = problems[selectedOptions[i]]()
+        
+                question.push(problem[0]);
+                answer.push(problem[1]);
+                solution.push(problem[2]);
+            }
+        }
+
+        generatePDF(question, answer, solution);
+    } else {
+        GenerateInteractiveMode(problems[selectedOptions[Math.floor(Math.random() * selectedOptions.length)]]());
+
+        document.getElementById('nextButton').onclick = function() {
+            document.getElementById('solution').style.setProperty('display', 'none');
+            document.getElementById('reveal').style.setProperty('display', 'inline-block');
+            starte6b(false);
+        }
+    }
+}
+
+function startperf(mode) {
+    document.getElementById("logo-container").style.setProperty('display', 'none');
+
+    var selectedOptions = [];
+
+    for (const checkbox of perfOptionCheckboxes) {
+        if (checkbox.checked) {
+            selectedOptions.push(checkbox.value);
+        }
+    }
+
+    var aircraftCheckboxes = document.getElementsByName("aircraft");
+    var aircraft = "";
+    for( i=0; i<aircraftCheckboxes.length; i++) {
+        if (aircraftCheckboxes[i].checked == true) {
+            aircraft = aircraftCheckboxes[i].id;
+            break;
+        }
+    }
+
+    var problems = e6b.problems[aircraft];
+
+    if (mode == true) {
+        var numOfProbs = input.value;
+
+        const question = [];
+        const answer = [];
+        const solution = [];
+
+        while (question.length < numOfProbs) {
+            selectedOptions.sort(() => Math.random() - 0.5); // shuffle array
+    
+            for (let i = 0; i < selectedOptions.length; i++) {
+                if (question.length >= numOfProbs) {
+                    // If we have enough elements in the question array, exit the loop
+                    break;
+                }
+        
+                var problem = problems[selectedOptions[i]]()
+        
+                question.push(problem[0]);
+                answer.push(problem[1]);
+                solution.push(problem[2]);
+            }
+        }
+
+        generatePDF(question, answer, solution);
+    } else {
+        GenerateInteractiveMode(problems[selectedOptions[Math.floor(Math.random() * selectedOptions.length)]]());
+
+        document.getElementById('nextButton').onclick = function() {
+            document.getElementById('solution').style.setProperty('display', 'none');
+            document.getElementById('reveal').style.setProperty('display', 'inline-block');
+            startperf(false);
+        }
+    }
+}
+
+function startxc() {
+
+}
 
 ////////////////////////////////////////////////////////////////////////
 // Build the Worksheet
@@ -79,16 +225,9 @@ selectWrittenCheckbox.checked = false;
 var robotoRegular = "font/RobotoCondensed-SemiBold.ttf";
 
 // Get all slected checkboxes when Generate Worksheet is pressed
-function getSelectedOptions() {
+function generatePDF(question, answer, solution) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    const selectedOptions = [input.value];
-
-    for (const checkbox of optionCheckboxes) {
-        if (checkbox.checked) {
-            selectedOptions.push(checkbox.value);
-        }
-    }
     const doc = new jsPDF();
     doc.setProperties({
         title: 'Questions',
@@ -109,33 +248,8 @@ function getSelectedOptions() {
     doc.text("Name:_________________________", 15, 55);
     doc.text("Date:_________________________", 130, 55);
 
-    // Populate questions and answers
-    const question = [];
-    const answer = [];
-    const solution = [];
-    var problems = e6b.problems;
-
     let yPos = 70; // Question Y Start
     var maxWidth = 180;
-
-    while (question.length < selectedOptions[0]) {
-        var options = selectedOptions.slice(1); // exclude amount of questions from beginning of array
-
-        options.sort(() => Math.random() - 0.5); // shuffle array
-
-        for (let i = 0; i < options.length; i++) {
-            if (question.length >= selectedOptions[0]) {
-                // If we have enough elements in the question array, exit the loop
-                break;
-            }
-    
-            var problem = problems[options[i]]()
-    
-            question.push(problem[0]);
-            answer.push(problem[1]);
-            solution.push(problem[2]);
-        }
-    }
 
     // Maximum y-position allowed on the page
     var maxY = doc.internal.pageSize.getHeight() - 20;
@@ -230,6 +344,8 @@ function getSelectedOptions() {
 
     // Remove everything from webpage before populating 
     document.getElementById('settings').innerHTML = "";
+    document.getElementById('performance').innerHTML = "";
+    document.getElementById('xc').innerHTML = "";
     document.body.style.margin = "0";
     document.body.style.paddingBottom = "0";
     document.body.style.maxWidth = "100%";
@@ -297,39 +413,18 @@ function getSelectedOptions() {
     document.body.appendChild(bottom);
 }
 
-const intOptions = [];
-
 // Get all slected checkboxes when start is pressed and begin interactive mode
-function startInteractiveMode() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+function GenerateInteractiveMode(problem) {
+    if (document.body.style.width != "100%" ) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    document.getElementById("settings").style.setProperty('display', 'none');
-    document.getElementById("interactive").style.setProperty('display', 'block');
-    document.body.style.maxWidth = "100%";
-    document.body.style.width = "100%";
-
-    for (const checkbox of optionCheckboxes) {
-        if (checkbox.checked) {
-            intOptions.push(checkbox.value);
-        }
+        document.getElementById("settings").style.setProperty('display', 'none');
+        document.getElementById("performance").style.setProperty('display', 'none');
+        document.getElementById("xc").style.setProperty('display', 'none');
+        document.getElementById("interactive").style.setProperty('display', 'block');
+        document.body.style.maxWidth = "100%";
+        document.body.style.width = "100%";
     }
-
-    var problems = e6b.problems;
-
-    var problem = problems[intOptions[Math.floor(Math.random() * intOptions.length)]]();
-
-    document.getElementById('question').innerHTML = problem[0];
-    document.getElementById('answerheader').innerHTML = problem[1];
-    document.getElementById('answer').innerHTML = problem[2].join('<br><br>');
-
-    // Remove everything from webpage before populating 
-    document.getElementById('settings').innerHTML = "";
-}
-
-function getNewQuestion() {
-    var problems = e6b.problems;
-
-    var problem = problems[intOptions[Math.floor(Math.random() * intOptions.length)]]();
 
     document.getElementById('question').innerHTML = problem[0];
     document.getElementById('answerheader').innerHTML = problem[1];
@@ -342,9 +437,11 @@ function getNewQuestion() {
  */
 var e6b = {
     problems: {
+        da20: {},
+        da40: {},
+        c172: {},
     },
-    compute: {
-    }
+    compute: {}
 };
 
 
@@ -1169,6 +1266,25 @@ e6b.problems.division = function () {
     ];
 };
 
+/**
+ * Perfomance Chart: Cruising Performace
+ */
+e6b.problems.da20.cruise = function () {
+    var fpm = e6b.rand(30, 120) * 10;
+    var gs = e6b.rand(50, 150);
+    var fpnm = Math.round(fpm * 60 / gs / 10) * 10;
+
+    return [
+        e6b.fmt("Climb gradiant (nearest 10 ft/nm): {{n}} kt groundspeed, {{n}} fpm climb rate", gs, fpm),
+        e6b.fmt("Approximately {{n}} ft/nm climb gradiant", fpnm),
+        [
+            e6b.fmt("Rotate until the groundspeed {{n}} kt appears above the rate pointer (60)", gs),
+            e6b.fmt("Find the climb rate {{n}} fpm on the outer scale", fpm),
+            e6b.fmt("Read the approximate climb gradiant {{n}} ft/nm on the inner scale below {{n}}", fpnm, fpm)
+        ]
+    ];
+};
+
 ////////////////////////////////////////////////////////////////////////
 // Computations
 ////////////////////////////////////////////////////////////////////////
@@ -1304,11 +1420,20 @@ e6b.fmt = function (fmt) {
 - update solutions with non-e6b ways of solving
 */
 
-document.getElementById("colorToggle").addEventListener("change", function() {
+document.getElementById("e6bcolorToggle").addEventListener("change", function() {
     document.documentElement.style.setProperty('--default-color', this.checked ? '#00773c' : '#21409a');
 
-    document.getElementById("gen").style.setProperty('display', this.checked ? 'none' : 'block');
-    document.getElementById("prob").style.setProperty('display', this.checked ? 'none' : 'block');
-    document.getElementById("str").style.setProperty('display', this.checked ? 'block' : 'none');
-    document.getElementById("mode").textContent = this.checked ? 'Interactive Mode' : 'Worksheet Mode';
+    document.getElementById("e6bgen").style.setProperty('display', this.checked ? 'none' : 'block');
+    document.getElementById("e6bprob").style.setProperty('display', this.checked ? 'none' : 'block');
+    document.getElementById("e6bstr").style.setProperty('display', this.checked ? 'block' : 'none');
+    document.getElementById("e6bmode").textContent = this.checked ? 'Interactive Mode' : 'Worksheet Mode';
+});
+
+document.getElementById("perfcolorToggle").addEventListener("change", function() {
+    document.documentElement.style.setProperty('--default-color', this.checked ? '#00773c' : '#21409a');
+
+    document.getElementById("perfgen").style.setProperty('display', this.checked ? 'none' : 'block');
+    document.getElementById("perfprob").style.setProperty('display', this.checked ? 'none' : 'block');
+    document.getElementById("perfstr").style.setProperty('display', this.checked ? 'block' : 'none');
+    document.getElementById("perfmode").textContent = this.checked ? 'Interactive Mode' : 'Worksheet Mode';
 });

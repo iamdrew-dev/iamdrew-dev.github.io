@@ -12,27 +12,186 @@
     <script src="https://kit.fontawesome.com/628b1ce69f.js" crossorigin="anonymous"></script>
   </head>
   <body>
-    <div id="settings">
+    <div>
       <div id="logo-container">
         <img src="images/cwlogo.jpg" alt="Crosswinds Aviation" id="logo">
       </div>
+    </div>
+    <div id="home">
+      <h1>Crosswinds Learning Center Portal</h1>
+      <div class="button-container" style="margin-top: 10rem;">
+        <button class="button" onclick="document.getElementById('home').style.setProperty('display', 'none');document.getElementById('settings').style.setProperty('display', 'block');">E6B Generator</button>
+        <button class="button" onclick="document.getElementById('home').style.setProperty('display', 'none');document.getElementById('performance').style.setProperty('display', 'block');">Performance Generator</button>
+        <button class="button" onclick="document.getElementById('home').style.setProperty('display', 'none');document.getElementById('xc').style.setProperty('display', 'block');">Cross-Country Generator</button>
+      </div>
+    </div>
+    <div id="performance" style="display: none;">
+      <h1>Perfomance Chart Practice Generator</h1>
+      <div class="overlay" id="overlay"></div>        
+      <div>
+        <div id="cnrtl" class="options">
+          <div class="toggle-container">
+            <label class="switch">
+                <input type="checkbox" id="perfcolorToggle">
+                <span class="sliderx"></span>
+            </label>
+            <p id="perfmode" style="padding-left: 1rem;font-weight: 700;">Worksheet Mode</p>
+          </div>              
+          <div id="perfprob" class="sliderdiv">
+            <input class="slider" type="range" id="tprob" min="5" max="30" value="10">
+            <p style="text-align: center;" id="value">Total Problems: 10</p>                 
+          </div>
+          <button id="perfgen" class="button" style="width:160px" onclick="startperf(true)">Generate</button>
+          <button id="perfstr" class="button" style="width:160px;display: none;" onclick="startperf(false)">Start</button>
+        </div>
+      </div>
+      <div>
+        <form id="checkboxForm">
+          <h3>Aircraft</h3>
+          <table id="toptable" class="checkbox-table">
+            <tr>
+              <td>
+                <label class="container">Diamond DA-40-180
+                  <input type="checkbox" id="da40" name="aircraft">
+                  <span class="checkmark"></span>
+                </label>
+              </td>
+              <td>
+                <label class="container">Diamond DA-20
+                  <input type="checkbox" id="da20" name="aircraft" checked>
+                  <span class="checkmark"></span>
+                </label>                  
+              </td>
+              <td>
+                <label class="container">Cessna 172
+                  <input type="checkbox" id="c172" name="aircraft">
+                  <span class="checkmark"></span>
+                </label>
+              </td>
+            </tr>
+          </table>
+
+          <h3>Performance Calculations</h3>
+          <table class="checkbox-table">
+            <tr>
+              <td>
+                <label class="container">Cruising Performance
+                  <input type="checkbox" name="perfoption" value="cruise" checked>
+                  <span class="checkmark"></span>
+                </label>
+              </td>
+              <td>
+                <label class="container">Wind Component
+                  <input type="checkbox" name="perfoption" value="wind_component">
+                  <span class="checkmark"></span>
+                </label>
+              </td>
+              <td>
+                <label class="container">Take-off Distance
+                  <input type="checkbox" name="perfoption" value="to_distance">
+                  <span class="checkmark"></span>
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label class="container">Climb Perfomance
+                  <input type="checkbox" name="perfoption" value="climb_performance">
+                  <span class="checkmark"></span>
+                </label>
+              </td>
+              <td>
+                <label class="container">Climb Perfomance w/ LDG Flaps
+                  <input type="checkbox" name="perfoption" value="climb_performance_lflap">
+                  <span class="checkmark"></span>
+                </label>
+              </td>
+              <td>
+                <label class="container">Climb Perfomance with T/O Flaps
+                  <input type="checkbox" name="perfoption" value="climb_performance_tflap">
+                  <span class="checkmark"></span>
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label class="container">Max Flight Duration(MT-Propeller)
+                  <input type="checkbox" name="perfoption" value="flight_duration">
+                  <span class="checkmark"></span>
+                </label>
+              </td>
+              <td>
+                <label class="container">Cruising Speed(TAS)
+                  <input type="checkbox" name="perfoption" value="cruise_speed">
+                  <span class="checkmark"></span>
+                </label>                
+              </td>
+              <td>
+                <label class="container">Landing Distance
+                  <input type="checkbox" name="perfoption" value="landing_distance">
+                  <span class="checkmark"></span>
+                </label>
+              </td>
+            </tr>
+          </table>
+          <h3>Weight and Balance</h3>
+          <table class="checkbox-table">
+            <tr>
+              <td>
+                <label class="container">Terms
+                  <input type="checkbox" name="perfoption" value="terms">
+                  <span class="checkmark"></span>
+                </label>
+              </td>
+              <td>
+                <label class="container">Weight
+                  <input type="checkbox" name="perfoption" value="weight">
+                  <span class="checkmark"></span>
+                </label>
+              </td>
+              <td>
+                <label class="container">Center of Gravity
+                  <input type="checkbox" name="perfoption" value="cg">
+                  <span class="checkmark"></span>
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label class="container">Weight Shift
+                  <input type="checkbox" name="perfoption" value="climb_performance">
+                  <span class="checkmark"></span>
+                </label>
+              </td>
+              <td></td>
+              <td></td>
+            </tr>
+          </table>
+          <h3></h3>
+        </form>
+      </div>
+    </div>
+    <div id="xc" style="display: none;">
+      <h1>Coming soon...</h1>
+    </div>
+    <div id="settings" style="display: none;">
       <h1>E6B Practice Generator</h1>
       <div class="overlay" id="overlay"></div>        
       <div>
         <div id="cnrtl" class="options">
           <div class="toggle-container">
             <label class="switch">
-                <input type="checkbox" id="colorToggle">
+                <input type="checkbox" id="e6bcolorToggle">
                 <span class="sliderx"></span>
             </label>
-            <p id="mode" style="padding-left: 1rem;font-weight: 700;">Worksheet Mode</p>
+            <p id="e6bmode" style="padding-left: 1rem;font-weight: 700;">Worksheet Mode</p>
           </div>              
-          <div id="prob" class="sliderdiv">
+          <div id="e6bprob" class="sliderdiv">
             <input class="slider" type="range" id="tprob" min="5" max="30" value="10">
             <p style="text-align: center;" id="value">Total Problems: 10</p>                 
           </div>
-          <button id="gen" class="button" style="width:160px" onclick="getSelectedOptions()">Generate</button>
-          <button id="str" class="button" style="width:160px;display: none;" onclick="startInteractiveMode()">Start</button>
+          <button id="e6bgen" class="button" style="width:160px" onclick="starte6b(true)">Generate</button>
+          <button id="e6bstr" class="button" style="width:160px;display: none;" onclick="starte6b(false)">Start</button>
         </div>
       </div>
       <div>
@@ -66,19 +225,19 @@
             <tr>
               <td>
                 <label class="container">Heading
-                  <input type="checkbox" name="option" value="heading" checked>
+                  <input type="checkbox" name="e6boption" value="heading" checked>
                   <span class="checkmark"></span>
                 </label>
               </td>
               <td>
                 <label class="container">Groundspeed
-                  <input type="checkbox" name="option" value="groundspeed" checked>
+                  <input type="checkbox" name="e6boption" value="groundspeed" checked>
                   <span class="checkmark"></span>
                 </label>
               </td>
               <td>
                 <label class="container">Wind Aloft
-                  <input type="checkbox" name="option" value="wind_aloft" checked>
+                  <input type="checkbox" name="e6boption" value="wind_aloft" checked>
                   <span class="checkmark"></span>
                 </label>
               </td>
@@ -86,7 +245,7 @@
             <tr>
               <td>
                 <label class="container">Runway X/H Wind
-                  <input type="checkbox" name="option" value="runway_headwind_crosswind" checked>
+                  <input type="checkbox" name="e6boption" value="runway_headwind_crosswind" checked>
                   <span class="checkmark"></span>
                 </label>
               </td>
@@ -100,13 +259,13 @@
             <tr>
               <td>
                 <label class="container">Groundspeed
-                  <input type="checkbox" name="option" value="speed" checked>
+                  <input type="checkbox" name="e6boption" value="speed" checked>
                   <span class="checkmark"></span>
                 </label>
               </td>
               <td>
                 <label class="container">Time enroute
-                  <input type="checkbox" name="option" value="time" checked>
+                  <input type="checkbox" name="e6boption" value="time" checked>
                   <span class="checkmark"></span>
                 </label>
               </td>
@@ -114,19 +273,19 @@
             <tr>
               <td>
                 <label class="container">Distance travelled
-                  <input type="checkbox" name="option" value="dist" checked>
+                  <input type="checkbox" name="e6boption" value="dist" checked>
                   <span class="checkmark"></span>
                 </label>
               </td>
               <td>
                 <label class="container">Fuel-consumption (gph)
-                  <input type="checkbox" name="option" value="gph" checked>
+                  <input type="checkbox" name="e6boption" value="gph" checked>
                   <span class="checkmark"></span>
                 </label>
               </td>
               <td>
                 <label class="container">Fuel required (gal)
-                  <input type="checkbox" name="option" value="fuel">
+                  <input type="checkbox" name="e6boption" value="fuel">
                   <span class="checkmark"></span>
                 </label>
               </td>
@@ -134,19 +293,19 @@
             <tr>
               <td>
                 <label class="container">Endurance
-                  <input type="checkbox" name="option" value="endurance">
+                  <input type="checkbox" name="e6boption" value="endurance">
                   <span class="checkmark"></span>
                 </label>
               </td>
               <td>
                 <label class="container">Density altitude
-                  <input type="checkbox" name="option" value="density_alt">
+                  <input type="checkbox" name="e6boption" value="density_alt">
                   <span class="checkmark"></span>
                 </label>
               </td>
               <td>
                 <label class="container">True airspeed
-                  <input type="checkbox" name="option" value="true_airspeed">
+                  <input type="checkbox" name="e6boption" value="true_airspeed">
                   <span class="checkmark"></span>
                 </label>
               </td>
@@ -154,19 +313,19 @@
             <tr>
               <td>
                 <label class="container">Calibrated airspeed
-                  <input type="checkbox" name="option" value="calibrated_airspeed">
+                  <input type="checkbox" name="e6boption" value="calibrated_airspeed">
                   <span class="checkmark"></span>
                 </label>
               </td>
               <td>
                 <label class="container">True altitude
-                  <input type="checkbox" name="option" value="true_altitude" checked>
+                  <input type="checkbox" name="e6boption" value="true_altitude" checked>
                   <span class="checkmark"></span>
                 </label>
               </td>
               <td>
                 <label class="container">Climb gradient
-                  <input type="checkbox" name="option" value="climb_gradient">
+                  <input type="checkbox" name="e6boption" value="climb_gradient">
                   <span class="checkmark"></span>
                 </label>
               </td>
@@ -174,19 +333,19 @@
             <tr>
               <td>
                 <label class="container">Climb rate required
-                  <input type="checkbox" name="option" value="climb_rate_required">
+                  <input type="checkbox" name="e6boption" value="climb_rate_required">
                   <span class="checkmark"></span>
                 </label>
               </td>
               <td>
                 <label class="container">Heading error
-                  <input type="checkbox" name="option" value="heading_error">
+                  <input type="checkbox" name="e6boption" value="heading_error">
                   <span class="checkmark"></span>
                 </label>
               </td>
               <td>
                 <label class="container">Heading correction
-                  <input type="checkbox" name="option" value="heading_correction">
+                  <input type="checkbox" name="e6boption" value="heading_correction">
                   <span class="checkmark"></span>
                 </label>
               </td>
@@ -194,13 +353,13 @@
             <tr>
               <td>
                 <label class="container">Distance to Navaid
-                  <input type="checkbox" name="option" value="distance_to_navaid">
+                  <input type="checkbox" name="e6boption" value="distance_to_navaid">
                   <span class="checkmark"></span>
                 </label>
               </td>
               <td>
                 <label class="container">Time to Navaid
-                  <input type="checkbox" name="option" value="time_to_navaid">
+                  <input type="checkbox" name="e6boption" value="time_to_navaid">
                   <span class="checkmark"></span>
                 </label>
               </td>
@@ -212,19 +371,19 @@
             <tr>
               <td>
                 <label class="container">Gallons / Litres
-                  <input type="checkbox" name="option" value="convert_volume">
+                  <input type="checkbox" name="e6boption" value="convert_volume">
                   <span class="checkmark"></span>
                 </label>
               </td>
               <td>
                 <label class="container">Distance NM / KM / SM
-                  <input type="checkbox" name="option" value="convert_distance">
+                  <input type="checkbox" name="e6boption" value="convert_distance">
                   <span class="checkmark"></span>
                 </label>
               </td>
               <td>
                 <label class="container">Weight lbs / Kg
-                  <input type="checkbox" name="option" value="convert_weight">
+                  <input type="checkbox" name="e6boption" value="convert_weight">
                   <span class="checkmark"></span>
                 </label>
               </td>
@@ -232,19 +391,19 @@
             <tr>
               <td>
                 <label class="container">Length ft / m
-                  <input type="checkbox" name="option" value="convert_length">
+                  <input type="checkbox" name="e6boption" value="convert_length">
                   <span class="checkmark"></span>
                 </label>
               </td>
               <td>
                 <label class="container">Temperature F / C
-                  <input type="checkbox" name="option" value="convert_temperature">
+                  <input type="checkbox" name="e6boption" value="convert_temperature">
                   <span class="checkmark"></span>
                 </label>
               </td>
               <td>
                 <label class="container">Fuel Weight / Volume
-                  <input type="checkbox" name="option" value="fuel_weight">
+                  <input type="checkbox" name="e6boption" value="fuel_weight">
                   <span class="checkmark"></span>
                 </label>
               </td>
@@ -256,13 +415,13 @@
             <tr>
               <td>
                 <label class="container">Multiplication
-                  <input type="checkbox" name="option" value="multiplication">
+                  <input type="checkbox" name="e6boption" value="multiplication">
                   <span class="checkmark"></span>
                 </label>
               </td>
               <td>
                 <label class="container">Division
-                  <input type="checkbox" name="option" value="division">
+                  <input type="checkbox" name="e6boption" value="division">
                   <span class="checkmark"></span>
                 </label>
               </td>
@@ -272,14 +431,11 @@
           <h3></h3>
         </form>
       </div>
-      <div>
-        <p style="margin-top:4em;text-align:center;"><a href="mailto:dbowen@crosswindsaviation.com" style="font-style: italic;">Questions or Comments?</a></p>
-      </div>
     </div>
     <div id="interactive" style="display: none;">
       <div style="background-color: #00773c;padding: 10px;text-align: left;">
           <button class="button" style="background-color:#ccc;color:#1e1e1e;margin-left: 1rem;" onclick="location.reload();">Home</button>
-          <button class="button" style="background-color:#ccc;color:var(--default-color);margin-right: 1rem;float: right;" onclick="document.getElementById('solution').style.setProperty('display', 'none');document.getElementById('reveal').style.setProperty('display', 'inline-block');getNewQuestion();">Next</button>
+          <button id="nextButton" class="button" style="background-color:#ccc;color:var(--default-color);margin-right: 1rem;float: right;">Next</button>
       </div>
       
       <div id="qacontainer">
@@ -291,6 +447,9 @@
           </div>
       </div>
     </div>
+    <footer>
+      <p style="text-align:center;"><a href="mailto:dbowen@crosswindsaviation.com" style="font-style: italic;">Questions or Comments?</a></p>
+    </footer>
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
     <script src="script.js?v=2.15"></script>
   </body>
