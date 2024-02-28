@@ -11,7 +11,7 @@ body{
 }
 #logo{
     display:block;
-    max-width:40%;
+    max-width:30%;
     height:auto
 }
 #logo-container{
@@ -35,6 +35,16 @@ h2{
 p{
     font-size:1rem
 }
+footer {
+    background-color: #fff;
+    color: #fff;
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
 label {
     font-size: 16px;
 }
@@ -47,7 +57,8 @@ label {
     display:flex;
     justify-content:center;
     align-items:center;
-    height:40px
+    height:40px;
+    margin: 5rem;
 }
 .button{
     display:inline-block;
@@ -60,13 +71,17 @@ label {
     border:1px solid transparent;
     letter-spacing:2px;
     min-width:160px;
+    max-width: 300px;
     text-transform:uppercase;
     white-space:normal;
     font-weight:700;
     text-align:center;
     color:#fff;
     background-color:var(--default-color);
-    height:48px
+    height:48px;
+    padding: 0 1rem;
+    margin: 2rem;
+    flex: 1;
 }
 .button:hover{
     opacity:.9
@@ -303,4 +318,3 @@ input:checked+.sliderx:before{
         margin-bottom: 1.5rem;
     }
 }
-
