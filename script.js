@@ -1267,22 +1267,130 @@ e6b.problems.division = function () {
 };
 
 /**
- * Perfomance Chart: Cruising Performace
+ * Perfomance Chart: Cruising Performace - reverse engineered from chart
  */
-e6b.problems.da20.cruise = function () {
-    var fpm = e6b.rand(30, 120) * 10;
-    var gs = e6b.rand(50, 150);
-    var fpnm = Math.round(fpm * 60 / gs / 10) * 10;
+/* e6b.problems.da20.cruise = function () {
+    var p = e6b.gen_density_alt();
+    var ps = (Math.floor(Math.random() * 7) + 9) * 5;
+
+    var rpm = ps * p.oat;
 
     return [
-        e6b.fmt("Climb gradiant (nearest 10 ft/nm): {{n}} kt groundspeed, {{n}} fpm climb rate", gs, fpm),
-        e6b.fmt("Approximately {{n}} ft/nm climb gradiant", fpnm),
+        e6b.fmt("Cruise Performance(RPM): {{n}}°C, {{n}}ft Pressure Altitude, {{n}}% Power Setting", p.oat, p.palt, ps),
+        e6b.fmt("Approximately {{n}} RPM", rpm),
         [
-            e6b.fmt("Rotate until the groundspeed {{n}} kt appears above the rate pointer (60)", gs),
-            e6b.fmt("Find the climb rate {{n}} fpm on the outer scale", fpm),
-            e6b.fmt("Read the approximate climb gradiant {{n}} ft/nm on the inner scale below {{n}}", fpnm, fpm)
+            e6b.fmt("Rotate until the groundspeed {{n}}kt appears above the rate pointer (60)", ps),
+            e6b.fmt("Find the climb rate {{n}}fpm on the outer scale", ps),
+            e6b.fmt("Read the approximate climb gradiant {{n}}ft/nm on the inner scale below {{n}}", ps, ps)
         ]
     ];
+};
+
+document.getElementById('testbutton').onclick = function findAltitudeLeft() {
+    // Define the coordinates of the two points
+    const x1 = -20;
+    const y1 = -1600;
+    const x2 = 60;
+    const y2 = 1761;
+
+    // Calculate the slope
+    const m = (y2 - y1) / (x2 - x1);
+
+    // 20 in the temp in c and -1600 is the selected altitude
+    console.log(m * 20 - 1600 );
+} */
+
+/**
+ * Perfomance Chart: Landing Distance
+ */
+
+e6b.problems.da20.landing_distance = function () {
+    var p = {};
+    var oat_offset = e6b.rand(20, -20);
+    p.palt = e6b.rand(1, 5) * 1000;
+    p.oat = Math.round(15 - (p.palt * 1.98 / 1000) + oat_offset);
+    p.dalt = e6b.compute.density_altitude(p.palt, p.oat);
+
+    var surface = Math.floor(Math.random() * 2);
+
+    var values = [
+        [0,1000,2000,3000,4000,5000,6000,7000],
+        [1360,1387,1417,1447,1478,1511,1545,1580],
+        [661,680,701,722,744,767,791,815]
+    ]
+
+    var closestValue = 0
+    var minDifference = p.dalt;
+
+    for (i=0; i<values[0].length; i++) {
+        var difference = Math.abs(p.dalt - values[0][i]);
+
+        if (difference < minDifference) {
+            closestValue = i;
+            minDifference = difference;
+        }
+    }
+
+    var gr = 0;
+    var ff = 0;
+    var lb = 0;
+    var ub = 0;
+
+    if (values[0][closestValue]-p.dalt < 0) {
+        lb = values[2][closestValue];
+        ub = values[2][closestValue+1];
+        gr = Math.round(values[2][closestValue] + (((p.dalt - values[0][closestValue])/1000) * (values[2][closestValue+1]-values[2][closestValue])));
+        ff = Math.round(values[1][closestValue] + (((p.dalt - values[0][closestValue])/1000) * (values[1][closestValue+1]-values[1][closestValue])));
+    } else if (values[0][closestValue]-p.dalt > 0) { 
+        lb = values[2][closestValue-1];
+        ub = values[2][closestValue];
+        gr = Math.round(values[2][closestValue-1] + ((p.dalt-values[0][closestValue-1])/1000) * (values[2][closestValue]-values[2][closestValue-1]));
+        ff = Math.round(values[1][closestValue-1] + ((p.dalt-values[0][closestValue-1])/1000) * (values[1][closestValue]-values[1][closestValue-1]));
+    } else if (values[0][closestValue]-p.dalt == 0) {
+        gr = values[2][closestValue];
+        ff = values[1][closestValue];
+
+        return [
+            e6b.fmt("Landing Distance: {{n}}°C, {{n}}ft Pressure Altitude", p.oat, p.palt),
+            e6b.fmt("Approximately {{n}}ft Ground Roll, Approximately {{n}}ft to clear a 50ft obstacle", gr, ff),
+            [
+                e6b.fmt("You got off easy... read landing distance(50ft) {{n}}ft under the height {{n}}ft", values[1][closestValue], p.dalt),
+                e6b.fmt("read landing roll {{n}}ft under landing distance(50ft) {{n}}ft", values[2][closestValue], values[1][closestValue])
+            ]
+        ];
+    }
+
+    if (surface == 1) {
+        return [
+            e6b.fmt("Landing Distance: {{n}}°C, {{n}}ft Pressure Altitude", p.oat, p.palt),
+            e6b.fmt("Approximately {{n}}ft Landing Roll, Approximately {{n}}ft to clear a 50ft obstacle", gr, ff),
+            [
+                e6b.fmt("First calculate Desnity Altitude."),
+                e6b.fmt("Subtract the Density Alitiude {{n}}ft by the lower bound {{n}}ft and divide by 1000", p.dalt, lb),
+                e6b.fmt("Subract the lower bound {{n}}ft by upper bound {{n}}ft", lb, ub),
+                e6b.fmt("Multiply the two results from above"),
+                e6b.fmt("Add the multiplied result to the lower bound"),
+                e6b.fmt("Do the same for Landing Distance")
+            ]
+        ];
+    } else {
+        gr = Math.round(gr * 1.05);
+        ff = Math.round(ff * 1.07);
+        return [
+            e6b.fmt("Landing Distance(1000 RPM Idle): {{n}}°C, {{n}}ft Pressure Altitude", p.oat, p.palt),
+            e6b.fmt("Approximately {{n}}ft Landing Roll, Approximately {{n}}ft to clear a 50ft obstacle", gr, ff),
+            [
+                e6b.fmt("First calculate Desnity Altitude."),
+                e6b.fmt("Subtract the Density Alitiude {{n}}ft by the lower bound {{n}}ft and divide by 1000", p.dalt, lb),
+                e6b.fmt("Subract the lower bound {{n}}ft by upper bound {{n}}ft", lb, ub),
+                e6b.fmt("Multiply the two results from above"),
+                e6b.fmt("Add the multiplied result to the lower bound"),
+                e6b.fmt("Do the same for Landing Distance"),
+                e6b.fmt("Multiply the Landing Roll by 5% and Multiply the Landing Distance(50ft) by 7%")
+            ]
+        ];
+
+    }
 };
 
 ////////////////////////////////////////////////////////////////////////
